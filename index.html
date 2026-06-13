@@ -9,61 +9,93 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-
+<body class="lang-en"> 
     <header class="top-navbar">
+        
         <div class="logo">
             <a href="#home">My Portfolio</a>
         </div>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#about">About Me</a></li>
-            </ul>
-        </nav>
+
+        <div class="nav-controls-wrapper">
+            
+            <div class="lang-switch-container">
+                <span class="lang-label">EN</span>
+                <label class="switch">
+                    <input type="checkbox" id="lang-toggle">
+                    <span class="slider round"></span>
+                </label>
+                <span class="lang-label">DE</span>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="#home" data-lang-en="Home" data-lang-de="Startseite">Home</a></li>
+                    <li><a href="#projects" data-lang-en="Projects" data-lang-de="Projekte">Projects</a></li>
+                    <li><a href="#about" data-lang-en="About Me" data-lang-de="Über mich">About Me</a></li>
+                </ul>
+            </nav>
+
+        </div>
+
     </header>
 
     <div class="main-content">
 
         <section id="home" class="page-section">
-            <h1>Welcome to My Website</h1>
-            <p>Hi, I'm glad you're here! This is my brand new clean space on the web where I share what I'm working on and a bit about myself.</p>
-            <p>Use the navigation menu above to smoothly scroll through my work, or just scroll down manually!</p>
+            <h1 data-lang-en="Welcome to My Website" data-lang-de="Willkommen auf meiner Webseite">Welcome to My Website</h1>
+            <p data-lang-en="Hi, I'm glad you're here! This is my brand new clean space on the web where I share what I'm working on and a bit about myself." 
+               data-lang-de="Hallo, schön dass du da bist! Dies ist mein brandneuer, cleaner Ort im Web, an dem ich meine Projekte und ein wenig über mich selbst teile.">
+               Hi, I'm glad you're here! This is my brand new clean space on the web where I share what I'm working on and a bit about myself.
+            </p>
+            <p data-lang-en="Use the navigation menu above to smoothly scroll through my work, or just scroll down manually!" 
+               data-lang-de="Nutze das Navigationsmenü oben, um flüssig durch meine Arbeit zu scrollen, oder scrolle einfach manuell nach unten!">
+               Use the navigation menu above to smoothly scroll through my work, or just scroll down manually!
+            </p>
         </section>
 
         <section id="projects" class="page-section">
-            <h1>My Projects</h1>
-            <p>Here is a look at some of the structures and technical setups I have been building.</p>
+            <h1 data-lang-en="My Projects" data-lang-de="Meine Projekte">My Projects</h1>
+            <p data-lang-en="Here is a look at some of the structures and technical setups I have been building." 
+               data-lang-de="Hier ist ein Blick auf einige der Strukturen und technischen Setups, die ich gebaut habe.">
+               Here is a look at some of the structures and technical setups I have been building.
+            </p>
             
             <div class="project-list">
                 <article>
-                    <h2>Project One: Web Dev</h2>
-                    <p>Starting clean with HTML and custom CSS architectures inside VS Code.</p>
+                    <h2 data-lang-en="Project One: Web Dev" data-lang-de="Projekt Eins: Web-Entwicklung">Project One: Web Dev</h2>
+                    <p data-lang-en="Starting clean with HTML and custom CSS architectures inside VS Code." 
+                       data-lang-de="Ein sauberer Start mit HTML und maßgeschneiderten CSS-Architekturen in VS Code.">
+                       Starting clean with HTML and custom CSS architectures inside VS Code.
+                    </p>
                 </article>
 
                 <article>
-                    <h2>Project Two: System Builds</h2>
-                    <p>Working on home configurations, server tech, and automation setups.</p>
+                    <h2 data-lang-en="Project Two: System Builds" data-lang-de="Projekt Zwei: System-Builds">Project Two: System Builds</h2>
+                    <p data-lang-en="Working on home configurations, server tech, and automation setups." 
+                       data-lang-de="Arbeit an Heimkonfigurationen, Servertechnologie und Automatisierungssetups.">
+                       Working on home configurations, server tech, and automation setups.
+                    </p>
                 </article>
             </div>
         </section>
-        
-    <div class="main-content">
-        
-        <section id="pattern-divider">
-            <div class="checkered-pattern"></div>
-        </section>
 
+    </div> <section id="pattern-divider">
+        <div class="checkered-pattern"></div>
+    </section>
+
+    <div class="main-content">
         <section id="about" class="page-section">
-            <h1>About Me</h1>
-            <p>Hello! I am a creator interested in tracking down tech puzzles, writing code, and staying active.</p>
+            <h1 data-lang-en="About Me" data-lang-de="Über mich">About Me</h1>
+            <p data-lang-en="Hello! I am a creator interested in tracking down tech puzzles, writing code, and staying active." 
+               data-lang-de="Hallo! Ich bin ein Entwickler, der sich für technische Rätsel, das Schreiben von Code und sportliche Aktivitäten interessiert.">
+               Hello! I am a creator interested in tracking down tech puzzles, writing code, and staying active.
+            </p>
             
-            <h2>My Main Focuses</h2>
+            <h2 data-lang-en="My Main Focuses" data-lang-de="Meine Schwerpunkte">My Main Focuses</h2>
             <ul>
-                <li>Web Design & Clean Layouts</li>
-                <li>Home Tech & Automation</li>
-                <li>Endurance Training & Running</li>
+                <li data-lang-en="Web Design & Clean Layouts" data-lang-de="Webdesign & Cleane Layouts">Web Design & Clean Layouts</li>
+                <li data-lang-en="Home Tech & Automation" data-lang-de="Heimtechnik & Automation">Home Tech & Automation</li>
+                <li data-lang-en="Endurance Training & Running" data-lang-de="Ausdauertraining & Laufen">Endurance Training & Running</li>
             </ul>
         </section>
     </div>
@@ -72,13 +104,13 @@
     <g transform="matrix(1,0,0,1,-241.885656,-663.433943)">
         <path d="M1107,1541C1107,1541 351.371,536.067 1082,741C1812.629,945.933 1265.833,1375 974,1665C819.353,1818.676 100.259,2296.649 849,2307C1597.741,2317.351 1344.059,1737.92 1182,1601C1011.167,1456.667 528.137,1024.303 430,1105C331.863,1185.697 194.04,1406.832 395,1446C595.96,1485.168 1545.739,1711.98 1661,1267C1776.261,822.02 1238.097,819.134 1199,1065C1159.903,1310.866 1060.809,1995.69 783,1949C505.191,1902.31 404.167,1426.333 566,1387C727.833,1347.667 2013.17,1811.529 1596,2101C1178.83,2390.471 1187.174,1873.292 1149,1722C1110.826,1570.708 1107,1541 1107,1541" style="fill:none;stroke:black;stroke-width:100px;"/>
     </g>
-</svg>
-
-    <div class="background-circle"></div> 
+    </svg>
     
-        <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-        <script src="script.js"></script>
+    <div class="background-circle"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>

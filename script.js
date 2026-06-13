@@ -51,18 +51,61 @@ document.addEventListener("DOMContentLoaded", () => {
 // Register ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
 
-    // Pin the pattern section and permanently lock the color shift on entry
+    // Pin the pattern section and dynamically shift colors based on scroll direction
     ScrollTrigger.create({
         trigger: "#pattern-divider",
-        start: "top 20%",       // Pins when the top of the pattern hits the top of the screen
+        start: "top 20%",       // Pins when the top of the pattern hits the top of the viewport
         end: "+=400",          // Keeps it locked in place for 400px of scrolling
         pin: true,              
         scrub: true,
-        onEnter: () => {
-            // Fires EXACTLY once when scrolling down into the section
-            document.querySelector("#pattern-divider").classList.add("color-shift");
-            document.body.classList.add("body-color-shift");
+        onToggle: self => {
+            const divider = document.querySelector("#pattern-divider");
+            const body = document.body;
+            
+            // If we are actively sitting in the pinned zone, turn on the color shift
+            if (self.isActive) {
+                divider.classList.add("color-shift");
+                body.classList.add("body-color-shift");
+            } 
+        },
+        onLeaveBack: () => {
+            // CRITICAL: When scrolling UP and completely leaving the top of the pattern,
+            // this strips the classes away to revert everything back to original sage green!
+            document.querySelector("#pattern-divider").classList.remove("color-shift");
+            document.body.classList.remove("body-color-shift");
         }
     });
+
+// LANGUAGE TOGGLE LOGIC
+    const langToggle = document.getElementById("lang-toggle");
+    const bodyElement = document.body;
+
+    langToggle.addEventListener("change", () => {
+        if (langToggle.checked) {
+            // Switch to German
+            bodyElement.classList.replace("lang-en", "lang-de");
+            updateLanguage("de");
+        } else {
+            // Switch to English
+            bodyElement.classList.replace("lang-de", "lang-en");
+            updateLanguage("en");
+        }
+    });
+
+    function updateLanguage(lang) {
+        // Find every element that has translation data
+        const translatableElements = document.querySelectorAll("[data-lang-en]");
+        
+        translatableElements.forEach(elem => {
+            if (lang === "de") {
+                elem.textContent = elem.getAttribute("data-lang-de");
+            } else {
+                elem.textContent = elem.getAttribute("data-lang-en");
+            }
+        });
+        
+        // Refresh ScrollTrigger calculations in case content heights shifted slightly
+        ScrollTrigger.refresh();
+    }
 
 });
