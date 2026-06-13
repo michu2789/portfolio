@@ -108,4 +108,56 @@ document.addEventListener("DOMContentLoaded", () => {
         ScrollTrigger.refresh();
     }
 
+// RESPONSIVE MOBILE POPUP MENU & STAR MORPH
+    const toggleBtn = document.getElementById("menu-toggle-btn");
+    const menuOverlay = document.getElementById("mobile-menu-overlay");
+    const overlayLinks = document.querySelectorAll(".mobile-menu-links a");
+    
+    let isMenuOpen = false;
+
+    // Create a standalone master GSAP timeline for the star transformation layout
+    const menuTimeline = gsap.timeline({ paused: true });
+
+    // 1. Morph the 3 straight lines into a geometric intersecting star pattern
+    menuTimeline.to(".line-1", { duration: 0.4, y: 13, rotation: 30, backgroundColor: "#1a1a1a", ease: "power2.out" }, 0)
+                .to(".line-2", { duration: 0.4, rotation: 90, backgroundColor: "#1a1a1a", ease: "power2.out" }, 0)
+                .to(".line-3", { duration: 0.4, y: -13, rotation: -30, backgroundColor: "#1a1a1a", ease: "power2.out" }, 0)
+                .to(".menu-toggle", { duration: 0.5, rotation: 180, ease: "power2.inOut" }, 0); // Spun the whole button box for extra flair
+
+    // 2. Animate the full-bleed link overlay fading in smoothly
+    menuTimeline.to(menuOverlay, {
+        duration: 0.4,
+        opacity: 1,
+        visibility: "visible",
+        pointerEvents: "auto",
+        ease: "power2.out"
+    }, 0);
+
+    // 3. Cascade the big menu text links upward into sight sequentially
+    menuTimeline.from(".mobile-menu-links li", {
+        duration: 0.4,
+        y: 30,
+        opacity: 0,
+        stagger: 0.1,
+        ease: "power2.out"
+    }, 0.1);
+
+    // Click Tripwire Controller
+    toggleBtn.addEventListener("click", () => {
+        if (!isMenuOpen) {
+            menuTimeline.play(); // Transforms into a star and opens popup
+        } else {
+            menuTimeline.reverse(); // Morphs back into 3 stripes and closes popup
+        }
+        isMenuOpen = !isMenuOpen;
+    });
+
+    // Auto-close menu window when clicking any menu anchor link option
+    overlayLinks.forEach(link => {
+        link.addEventListener("click", () => {
+            menuTimeline.reverse();
+            isMenuOpen = false;
+        });
+    });
+
 });

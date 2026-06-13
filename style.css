@@ -148,6 +148,92 @@ input:checked + .slider:before {
 }
 
 /* ==========================================
+   2c. RESPONSIVE MOBILE HAMBURGER & OVERLAY
+   ========================================== */
+.menu-container {
+    display: flex;
+    align-items: center;
+}
+
+/* By default, hide the mobile burger button button on desktop monitors */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 40px;
+    height: 30px;
+    position: relative;
+    z-index: 2000; /* Keeps it floating above the fullscreen popup */
+    padding: 0;
+}
+
+/* Global look of the 3 stripes */
+.stripe {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    background-color: #708238; /* Sage Green stripes */
+    border-radius: 2px;
+    transform-origin: center center; /* Critical for rotation pivot points */
+}
+
+/* Stack the 3 stripes vertically with space between them */
+.line-1 { top: 0; }
+.line-2 { top: 13px; }
+.line-3 { top: 26px; }
+
+/* Fullscreen Popup Overlay Background */
+.mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(244, 243, 239, 0.98); /* Off-white canvas matching your background */
+    z-index: 1500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Hidden by default on page load load */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.mobile-menu-links ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 35px;
+}
+
+.mobile-menu-links a {
+    color: #1a1a1a;
+    text-decoration: none;
+    font-size: 28px; /* Big, easy-to-tap touch links */
+    font-weight: 700;
+}
+
+/* ==========================================
+   2d. THE RESPONSIVE BREAKPOINT SWITCH (MEDIA QUERY)
+   ========================================== */
+@media (max-width: 768px) {
+    /* Hide the flat text menu links when the screen shrinks */
+    .desktop-menu {
+        display: none;
+    }
+    
+    /* Show the interactive 3-stripe button instead */
+    .menu-toggle {
+        display: block;
+    }
+}
+
+/* ==========================================
    3. SCROLLABLE SECTIONS (CENTERED CONTENT)
    ========================================== */
 .main-content {
