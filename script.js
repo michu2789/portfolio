@@ -35,18 +35,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+// Register ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
 
-    // Animate the circle crossing the screen ONLY during the projects section
-    gsap.to(".background-circle", {
-        left: "110%", // Moves all the way across to the right side (past the screen boundary)
-        ease: "power1.inOut", // Smoothly accelerates and decelerates as it travels
+    // DYNAMIC SVG VECTOR TRACING LOGIC
+    const zigzagPath = document.querySelector(".zigzag-path");
+    
+    // Ask the browser to measure the exact math length of your custom line design
+    const pathLength = zigzagPath.getTotalLength();
+    
+    // Initialize the line as completely hidden by setting the dash gaps to match its own length
+    gsap.set(zigzagPath, {
+        strokeDasharray: pathLength,
+        strokeDashoffset: pathLength
+    });
+
+    // Trace your custom line dynamically as the user scrolls down through projects
+    gsap.to(zigzagPath, {
+        strokeDashoffset: 0, // Reduces the offset to 0, drawing the line completely into view
+        ease: "none",        // Perfect 1:1 mechanical sync to the scroll wheel movement
         scrollTrigger: {
-            trigger: "#projects",   // <-- Directs the animation to target the projects section
-            start: "top bottom",    // Starts moving the moment the top of projects enters the bottom of the screen
-            end: "bottom top",      // Finishes moving the moment the bottom of projects leaves the top of the screen
-            scrub: 1                // Smoothly binds the horizontal pixel movement to your scrolling speed
+            trigger: "#projects",
+            start: "top bottom", // Animation begins the instant the project block hits the screen bottom
+            end: "bottom top",   // Animation completes the instant the projects block scrolls away out of view
+            scrub: 1             // Smooth, fluid lag-catchup weight tracking
         }
     });
+
 
 // Register ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
@@ -160,4 +175,28 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-});
+// Register ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
+
+    // CRITICAL FIX: Wrap the animation inside a tiny timeout delay.
+    // This gives the pinned checkered pattern time to lock into place 
+    // before the browser calculates exactly where the About section sits.
+    setTimeout(() => {
+        
+        gsap.to(".socials-pill-container", {
+            opacity: 1,
+            scale: 1,           
+            duration: 0.6,
+            ease: "back.out(1.2)", 
+            scrollTrigger: {
+                trigger: "#about",         // Watches the About section
+                start: "top 60%",          // Triggers when the top of the section enters the lower-middle viewport
+                end: "bottom bottom",
+                toggleActions: "play none none reverse", // Plays going down, reverses going up
+                // invalidateOnRefresh: true // Recalculates dynamically if the screen size changes
+            }
+        });
+
+    }, 100); // A brief 100ms pause ensures perfect structural execution
+
+})

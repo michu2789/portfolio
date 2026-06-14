@@ -1,22 +1,85 @@
 /* ==========================================
-   1. GLOBAL RESETS & FONTS
+   1. GLOBAL FONTS & ARCHITECTURE DEFINITIONS
    ========================================== */
-* {
-    box-sizing: border-box; 
-    margin: 0;
-    padding: 0;
+@font-face {
+    font-family: 'MyCustomTitleFont';
+    src: url('Pilowlava-Regular.woff2') format('woff2'); /* Replace with your actual filename */
+    font-weight: 1000;
+    font-style: bold;
+    font-display: swap; 
 }
 
-html {
-    scroll-behavior: smooth; /* <-- Enables beautiful, smooth automatic scrolling */
-    scroll-padding-top: 120px; /* Prevents the sticky menu from covering up section headings */
+/* 1b. Your New Custom Heading Font */
+@font-face {
+    font-family: 'CustomHeadingFont';
+    src: url('DTGetaiGroteskDisplay-Black.otf') format('opentype'); /* Change to your actual file name */
+    font-weight: 700;
+    font-style: bold;
+    font-display: swap;
 }
 
+/* 1c. Your New Custom Body Font */
+@font-face {
+    font-family: 'CustomBodyFont';
+    src: url('Thunder-ExtraLightLCItalic.woff2') format('woff2');    /* Change to your actual file name */
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ==========================================
+   2. TYPOGRAPHY APPLICATION HIERARCHY
+   ========================================== */
 body {
-    font-family: 'Raleway', sans-serif;
+    /* Applies your new body font globally to paragraphs, lists, and standard layout text */
+    font-family: 'CustomBodyFont', sans-serif;
     line-height: 1.6;
-    background-color: #f4f3ef; /* Off-White background */
+    background-color: #f4f3ef; 
     color: #1a1a1a;           
+}
+
+/* MAIN LOGO (Left Side Navbar) */
+.top-navbar .logo a {
+    font-family: 'MyCustomTitleFont', sans-serif;
+    color: #1a1a1a; 
+    text-decoration: none;
+    font-weight: 1000;
+    font-size: 50px;
+}
+
+/* UTILITY HEADERS (Nav Links, Social Pills, Language Indicators) */
+nav a, .social-pill-link, .lang-label {
+    font-family: 'CustomHeadingFont', sans-serif; /* Using your heading font for structure consistency */
+    font-size: 15px;
+    font-weight: 600; 
+    letter-spacing: 0.5px;
+}
+
+h1 {
+    font-family: 'CustomHeadingFont', sans-serif;
+    font-size: 5rem !important; /* <-- Add '!important' right before the semicolon to test it */
+    line-height: 1.2 !important;
+    letter-spacing: -0.05em; /* Tightens the spacing for a more impactful title look */
+    color: #1a1a1a;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+h2 {
+    font-family: 'CustomHeadingFont', sans-serif;
+    font-size: 1.8rem;
+    color: #1a1a1a;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+p, li {
+    font-family: 'CustomBodyFont', sans-serif;
+    font-size: 2.5rem !important; /* <-- Add '!important' right before the semicolon to test it */
+    line-height: 1.1 !important;
+    color: #2d2d2d; 
+    margin-bottom: 20px;
 }
 
 /* ==========================================
@@ -337,19 +400,22 @@ li {
 }
 
 /* ==========================================
-   6. CROSSING BACKGROUND CIRCLE
+   6. CROSSING BACKGROUND ZIGZAG LINE
    ========================================== */
-.background-circle {
+.background-zigzag-svg {
     position: fixed;
-    top: 45%;             /* Positions it vertically in the mid-lower viewport */
-    left: -300px;         /* <-- Starts completely hidden off the left side of the screen */
-    width: 250px;
-    height: 250px;
-    background-color: rgba(112, 130, 56, 0.05); /* Even softer Sage Green tint */
-    border: 2px solid rgba(112, 130, 56, 0.15); /* Clean, solid soft outline */
-    border-radius: 50%;   /* Makes the box a perfect circle */
-    z-index: -1;          /* Stays safely behind the white project cards */
-    pointer-events: none; /* Won't interfere with links or scrolling */
+    top: 30%;             /* Adjust this percentage to move the layout higher or lower on the page */
+    left: -20%;            /* Starts slightly off-screen to the left for a dynamic entrance */
+    width: 150vw;         /* Spans the full width of the screen */
+    height: auto;         /* Automatically maintains the natural design aspect ratio proportions */
+    z-index: -1;          /* Locks it safely behind your white projects text cards */
+    pointer-events: none; 
+    opacity: 0.2;         /* Keeps it soft and subtle in the background workspace */
+}
+
+.zigzag-path {
+    stroke: #708238;      /* Forces the line color to Sage Green */
+    stroke-width: 40px;   /* Adjusted down from 91px so it stays elegant on laptop screen viewports */
 }
 
 /* ==========================================
@@ -418,4 +484,40 @@ body {
 /* Ensure the divider section can fade its background back and forth */
 #pattern-divider {
     transition: background-color 0.6s ease-in-out;
+}
+
+/* ==========================================
+   8. CENTERED FOOTER SOCIAL PILL CONTAINER
+   ========================================== */
+.socials-pill-container {
+    display: inline-flex;  
+    justify-content: center;
+    align-items: center;
+    gap: 30px;            
+    
+    background-color: #ffffff; 
+    padding: 14px 40px;
+    margin-top: 60px;     
+    border-radius: 50px;  
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04); 
+    border: 1px solid #e8e7e3;
+    
+    /* GSAP will animate these properties from here: */
+    opacity: 0;
+    transform: scale(0.9); 
+}
+
+.social-pill-link {
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #1a1a1a;        /* Sleek black text */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* Turns Sage Green on hover */
+.social-pill-link:hover {
+    color: #708238; 
 }
