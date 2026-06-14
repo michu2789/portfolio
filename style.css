@@ -490,14 +490,16 @@ body {
    8. CENTERED FOOTER SOCIAL PILL CONTAINER
    ========================================== */
 .socials-pill-container {
-    display: inline-flex;  
+    display: flex;  
     justify-content: center;
     align-items: center;
-    gap: 30px;            
-    
+    gap: 30px;
+    width: fit-content;
+   
     background-color: #ffffff; 
     padding: 14px 40px;
     margin-top: 60px;     
+    margin: 60px auto 0 auto; /* Centers the container horizontally and adds top margin */
     border-radius: 50px;  
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04); 
     border: 1px solid #e8e7e3;
