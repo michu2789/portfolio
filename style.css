@@ -124,7 +124,7 @@ nav ul {
 }
 
 nav a {
-    color: #708238; /* Sage Green */
+    color: #87d68dff; /* Sage Green */
     text-decoration: none;
     font-size: 16px;
     font-weight: 600; 
@@ -135,8 +135,8 @@ nav a {
 }
 
 nav a:hover {
-    color: #ffffff;
-    background-color: #708238; 
+    color: #748386ff;
+    background-color: #87d68dff; 
 }
 
 /* ==========================================
@@ -157,7 +157,7 @@ nav a:hover {
 
 body.lang-en .lang-switch-container .lang-label:first-child,
 body.lang-de .lang-switch-container .lang-label:last-child {
-    color: #1a1a1a;
+    color: #1d201fff;
 }
 
 .switch {
@@ -195,8 +195,8 @@ body.lang-de .lang-switch-container .lang-label:last-child {
 }
 
 input:checked + .slider {
-    background-color: #708238;
-    border-color: #5d6d2e;
+    background-color: #87d68dff;
+    border-color: #E3879E;
 }
 
 input:checked + .slider:before {
@@ -237,7 +237,7 @@ input:checked + .slider:before {
     position: absolute;
     height: 4px;
     width: 100%;
-    background-color: #708238; /* Sage Green stripes */
+    background-color: #87d68dff; /* Sage Green stripes */
     border-radius: 2px;
     transform-origin: center center; /* Critical for rotation pivot points */
 }
@@ -388,9 +388,9 @@ li {
 /* ==========================================
    5. CUSTOM SVG BACKGROUND SHAPE
    ========================================== */
-.custom-svg-shape {
+.flower {
     position: fixed;
-    right: 07%;           
+    right: -05%;           
     top: 07%;             /* Starts centered vertically */
     /* REMOVED: transform: translateY(-50%) - Let's handle alignment via GSAP instead */
     transform-origin: center center; /* Ensures it rotates around its own center axis */
@@ -414,7 +414,7 @@ li {
 }
 
 .zigzag-path {
-    stroke: #708238;      /* Forces the line color to Sage Green */
+    stroke: #e87ea1ff;      /* Forces the line color to petal rouge */
     stroke-width: 40px;   /* Adjusted down from 91px so it stays elegant on laptop screen viewports */
 }
 
@@ -425,14 +425,15 @@ li {
     --square-size: 8vw; 
 }
 
-/* Add a smooth transition to the main body background */
+/* 1. FORCE THE BODY TO STAY WARM OFF-WHITE EVERYWHERE */
 body {
-    transition: background-color 0.8s ease;
+    background-color: #f4f3ef !important; /* Your signature warm off-white */
+    transition: background-color 0.3s ease-in-out;
 }
 
-/* This class gets added permanently when you hit the divider */
+/* Remove or delete the old body.body-color-shift block so it doesn't change to green */
 body.body-color-shift {
-    background-color: #eae7df; /* A slightly deeper, warmer tinted off-white to complement the new pattern hue */
+    background-color: #f4f3ef !important; /* Kept warm off-white */
 }
 
 #pattern-divider {
@@ -442,48 +443,37 @@ body.body-color-shift {
     height: calc(var(--square-size) * 5); 
     position: relative;
     overflow: hidden;
-    background-color: #f4f3ef; 
-    transition: background-color 0.8s ease;
+    background-color: #f4f3ef; /* Matches the body background */
+    transition: background-color 0.3s ease-in-out;
 }
 
-/* Update the background color of the divider to match the body shift */
+/* Keeps the divider section's base background clean as well */
 body.body-color-shift #pattern-divider {
-    background-color: #eae7df;
+    background-color: #f4f3ef;
 }
 
+/* 2. STARTING STATE: Burnt Orange grid pattern */
 .checkered-pattern {
     width: 100%;
     height: 100%;
     background-image: 
-        linear-gradient(45deg, rgba(112, 130, 56, 0.15) 25%, transparent 25%), 
-        linear-gradient(-45deg, rgba(112, 130, 56, 0.15) 25%, transparent 25%), 
-        linear-gradient(45deg, transparent 75%, rgba(112, 130, 56, 0.15) 75%), 
-        linear-gradient(-45deg, transparent 75%, rgba(112, 130, 56, 0.15) 75%);
+        linear-gradient(45deg, rgba(251, 139, 36, 0.2) 25%, transparent 25%), 
+        linear-gradient(-45deg, rgba(251, 139, 36, 0.2) 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, rgba(251, 139, 36, 0.2) 75%), 
+        linear-gradient(-45deg, transparent 75%, rgba(251, 139, 36, 0.2) 75%);
         
     background-size: var(--square-size) var(--square-size); 
-    background-position: 
-        0 0, 
-        0 calc(var(--square-size) / 2), 
-        calc(var(--square-size) / 2) calc(var(--square-size) / -2), 
-        calc(var(--square-size) / -2) 0;
-    
-    /* Smooth CSS transition for the filter color morph */
-    transition: filter 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    background-position: 0 0, 0 calc(var(--square-size) / 2), calc(var(--square-size) / 2) calc(var(--square-size) / -2), calc(var(--square-size) / -2) 0;
+    transition: background-image 0.6s ease-in-out;
 }
 
-/* When this class is added, it stays permanently */
+/* 3. ACTIVE STATE: The grid squares still morph to Mint Green cleanly */
 #pattern-divider.color-shift .checkered-pattern {
-    filter: hue-rotate(140deg) saturate(1.5); /* Permanently shifts the palette */
-}
-
-/* Ensure the main body can smoothly fade its background back and forth */
-body {
-    transition: background-color 0.6s ease-in-out;
-}
-
-/* Ensure the divider section can fade its background back and forth */
-#pattern-divider {
-    transition: background-color 0.6s ease-in-out;
+    background-image: 
+        linear-gradient(45deg, rgba(135, 214, 141, 0.25) 25%, transparent 25%), 
+        linear-gradient(-45deg, rgba(135, 214, 141, 0.25) 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, rgba(135, 214, 141, 0.25) 75%), 
+        linear-gradient(-45deg, transparent 75%, rgba(135, 214, 141, 0.25) 75%);
 }
 
 /* ==========================================
@@ -514,12 +504,141 @@ body {
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.5px;
-    color: #1a1a1a;        /* Sleek black text */
+    color: #1d201fff;        /* Sleek black text */
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 /* Turns Sage Green on hover */
 .social-pill-link:hover {
-    color: #708238; 
+    color: #87d68dff; 
+}
+
+/* ==========================================
+   9. INTERACTIVE ROUNDED PHOTOSTACK DECK
+   ========================================== */
+.project-row {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 80px;
+    align-items: center;
+    margin-bottom: 140px;
+    width: 100%;
+}
+
+.photo-stack-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.photo-stack {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    aspect-ratio: 4 / 3;
+    cursor: pointer;
+    user-select: none; /* Prevents text highlights when clicked rapidly */
+}
+
+/* THE SHARED MODERN CONTAINER FOR ALL CARDS IN THE STACK */
+.stack-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    border-radius: 16px;       /* Sleek modern rounded corners */
+    border: 1px solid rgba(232, 231, 227, 0.8);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+    overflow: hidden;          /* Crops images tightly inside the round corners */
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), 
+                z-index 0.5s step-end, 
+                opacity 0.4s ease;
+}
+
+.stack-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;         /* Fills the frame beautifully */
+    display: block;
+}
+
+/* INITIAL RESTING BASE TRANSFORMATIONS */
+/* Ensure the browser respects strict layer positioning changes during class swaps */
+.layer-1 {
+    z-index: 10 !important;
+    transform: translate(0px, 0px) rotate(0deg);
+}
+
+.layer-2 {
+    z-index: 9 !important;
+    transform: translate(12px, 8px) rotate(2deg);
+}
+
+.layer-3 {
+    z-index: 8 !important;
+    transform: translate(-10px, 14px) rotate(-3deg);
+}
+
+/* SLEEK INTERACTIVE HOVER FLUIDITY: Expands slightly outward on mouse-over */
+.photo-stack:hover .layer-1.active-top { transform: translate(-4px, -4px) rotate(-1deg); }
+.photo-stack:hover .layer-2.active-top { transform: translate(0px, 0px) rotate(0deg); } /* If layer-2 becomes top */
+.photo-stack:hover .layer-2 { transform: translate(18px, 12px) rotate(3.5deg); }
+.photo-stack:hover .layer-3 { transform: translate(-16px, 20px) rotate(-4.5deg); }
+
+/* FLOATING DOCK INSTRUCTION BADGE */
+.stack-badge {
+    position: absolute;
+    bottom: -20px;
+    right: 20px;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: 'CustomHeadingFont', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+.photo-stack:hover .stack-badge {
+    opacity: 1;
+}
+
+/* SIDE TEXT BLOCK */
+.project-text-block {
+    display: flex;
+    flex-direction: column;
+}
+.project-future-link {
+    font-family: 'CustomHeadingFont', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #a3a3a3;
+    text-transform: uppercase;
+    margin-top: 20px;
+    transition: color 0.3s ease;
+}
+.project-row:hover .project-future-link {
+    color: #708238;
+}
+
+/* RESPONSIVE FLIP FOR MOBILE SCREEN CONFIGURATIONS */
+@media (max-width: 900px) {
+    .project-row {
+        grid-template-columns: 1fr;
+        gap: 50px;
+        margin-bottom: 90px;
+    }
+    .photo-stack {
+        max-width: 360px;
+    }
 }

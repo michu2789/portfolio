@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger);
 
     // Smoothly rotate AND push the SVG to the bottom as the user scrolls
-    gsap.to(".custom-svg-shape", {
+    gsap.to(".flower", {
         rotation: 360,      // Keeps the elegant spinning behavior
         top: "80%",         // Smoothly moves the SVG down toward the bottom of the screen
         ease: "none",       
@@ -199,4 +199,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }, 100); // A brief 100ms pause ensures perfect structural execution
 
-})
+// REFINED INTERACTIVE PHOTOSTACK DECK ENGINE
+    const stack = document.querySelector(".interactive-deck");
+    
+    if (stack) {
+        let isAnimating = false; // Safety lock to prevent glitches if clicked mid-animation
+
+        stack.addEventListener("click", () => {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const layers = Array.from(stack.querySelectorAll(".stack-layer"));
+            const currentTop = stack.querySelector(".active-top");
+            
+            // 1. Swoop the top card out to the side smoothly
+            currentTop.style.transition = "transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease";
+            currentTop.style.transform = "translate(80px, -40px) rotate(12deg)";
+            currentTop.style.opacity = "0";
+
+            // 2. Wait for the swoop-out to finish, then restack behind the scenes
+            setTimeout(() => {
+                currentTop.classList.remove("active-top");
+                
+                // Drop its z-index immediately to the absolute bottom so it cannot flash on top
+                currentTop.style.zIndex = "1"; 
+                currentTop.style.transition = "none"; // Temporarily kill transitions to reset position instantly
+
+                layers.forEach(layer => {
+                    if (layer.classList.contains("layer-1")) {
+                        layer.classList.remove("layer-1");
+                        layer.classList.add("layer-3");
+                    } else if (layer.classList.contains("layer-2")) {
+                        layer.classList.remove("layer-2");
+                        layer.classList.add("layer-1");
+                        layer.classList.add("active-top"); // The next card climbs to the front
+                    } else if (layer.classList.contains("layer-3")) {
+                        layer.classList.remove("layer-3");
+                        layer.classList.add("layer-2");
+                    }
+                });
+
+                // 3. Forcing a quick browser redraw step so the layout changes register silently
+                void currentTop.offsetWidth;
+
+                // 4. Return the card to its resting background position smoothly
+                currentTop.style.transform = "";
+                currentTop.style.opacity = "";
+                
+                // Clean up inline styles completely after everything settles down
+                setTimeout(() => {
+                    currentTop.style.zIndex = "";
+                    currentTop.style.transition = "";
+                    isAnimating = false; // Unlock clicks
+                }, 50);
+
+            }, 250); // Matches the swoop duration perfectly
+        });
+    }
+
+});
