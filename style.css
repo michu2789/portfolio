@@ -236,7 +236,7 @@ input:checked + .slider:before {
 /* Global look of the 3 stripes */
 .stripe {
     display: block;
-    position: absolute;
+    position:  absolute;
     height: 4px;
     width: 100%;
     background-color: #87d68dff; /* Sage Green stripes */
@@ -295,6 +295,7 @@ input:checked + .slider:before {
     /* Show the interactive 3-stripe button instead */
     .menu-toggle {
         display: block;
+        margin-right: 29px; /* Adds a small gap from the right edge of the navbar */
     }
 }
 
@@ -398,7 +399,7 @@ li {
     transform-origin: center center; /* Ensures it rotates around its own center axis */
     z-index: -1;          
     pointer-events: none; 
-    opacity: 0.8;         
+    opacity: 0.6;         
 }
 
 /* ==========================================
@@ -412,11 +413,11 @@ li {
     height: auto;         /* Automatically maintains the natural design aspect ratio proportions */
     z-index: -1;          /* Locks it safely behind your white projects text cards */
     pointer-events: none; 
-    opacity: 0.2;         /* Keeps it soft and subtle in the background workspace */
+    opacity: 0.8;         /* Keeps it soft and subtle in the background workspace */
 }
 
 .zigzag-path {
-    stroke: #e87ea1ff;      /* Forces the line color to petal rouge */
+    stroke: rgb(232, 126, 161);      /* Forces the line color to petal rouge */
     stroke-width: 40px;   /* Adjusted down from 91px so it stays elegant on laptop screen viewports */
 }
 
@@ -427,64 +428,65 @@ li {
     --square-size: 8vw; 
 }
 
-/* 1. FORCE THE BODY TO STAY WARM OFF-WHITE EVERYWHERE */
 body {
-    background-color: #f4f3ef !important; /* Your signature warm off-white */
+    background-color: #f4f3ef !important; 
     transition: background-color 0.3s ease-in-out;
-}
-
-/* Remove or delete the old body.body-color-shift block so it doesn't change to green */
-body.body-color-shift {
-    background-color: #f4f3ef !important; /* Kept warm off-white */
 }
 
 #pattern-divider {
     width: 100vw;         
     margin-left: calc(-50vw + 50%); 
     left: 0;
-    /* Desktop height: 5 rows of squares high */
-    height: calc(var(--square-size) * 5); 
+    height: calc(var(--square-size) * 15); 
     position: relative;
     overflow: hidden;
     background-color: #f4f3ef; 
     transition: background-color 0.3s ease-in-out;
 }
 
-/* --- ADD THIS MOBILE ADJUSTMENT RIGHT HERE --- */
 @media (max-width: 768px) {
     #pattern-divider {
-        /* Mobile height: Increases it to 8 rows of squares high so it stands out! */
-        height: calc(var(--square-size) * 15); 
+        height: calc(var(--square-size) * 8); 
     }
 }
 
-/* Keeps the divider section's base background clean as well */
-body.body-color-shift #pattern-divider {
-    background-color: #f4f3ef;
-}
-
-/* 2. STARTING STATE: Burnt Orange grid pattern */
+/* SHARED PATTERN RULES (Stacked perfectly on top of each other) */
 .checkered-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(45deg, rgba(251, 139, 36, 0.2) 25%, transparent 25%), 
-        linear-gradient(-45deg, rgba(251, 139, 36, 0.2) 25%, transparent 25%), 
-        linear-gradient(45deg, transparent 75%, rgba(251, 139, 36, 0.2) 75%), 
-        linear-gradient(-45deg, transparent 75%, rgba(251, 139, 36, 0.2) 75%);
-        
     background-size: var(--square-size) var(--square-size); 
     background-position: 0 0, 0 calc(var(--square-size) / 2), calc(var(--square-size) / 2) calc(var(--square-size) / -2), calc(var(--square-size) / -2) 0;
-    transition: background-image 0.6s ease-in-out;
+    /* This handles the ultra-smooth fade */
+    transition: opacity 0.8s ease-in-out; 
 }
 
-/* 3. ACTIVE STATE: The grid squares still morph to Mint Green cleanly */
-#pattern-divider.color-shift .checkered-pattern {
+/* BASE LAYER: Burnt Orange (Always fully visible at the bottom) */
+.orange-pattern {
     background-image: 
-        linear-gradient(45deg, rgba(135, 214, 141, 0.25) 25%, transparent 25%), 
-        linear-gradient(-45deg, rgba(135, 214, 141, 0.25) 25%, transparent 25%), 
-        linear-gradient(45deg, transparent 75%, rgba(135, 214, 141, 0.25) 75%), 
-        linear-gradient(-45deg, transparent 75%, rgba(135, 214, 141, 0.25) 75%);
+        linear-gradient(45deg, rgb(251, 140, 36) 25%, transparent 25%), 
+        linear-gradient(-45deg, rgb(251, 140, 36) 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, rgb(251, 140, 36) 75%), 
+        linear-gradient(-45deg, transparent 75%, rgb(251, 140, 36) 75%);
+    z-index: 1;
+}
+
+/* TOP LAYER: Mint Green (Starts completely hidden) */
+.green-pattern {
+    background-image: 
+        linear-gradient(45deg, rgba(135, 214, 141, 1) 25%, transparent 25%), 
+        linear-gradient(-45deg, rgba(135, 214, 141, 1) 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, rgba(135, 214, 141, 1) 75%), 
+        linear-gradient(-45deg, transparent 75%, rgba(135, 214, 141, 1) 75%);
+    opacity: 0;
+    z-index: 2;
+}
+
+/* ACTIVE STATE: Softly dissolve the green pattern into view on top of the orange */
+#pattern-divider.color-shift .green-pattern {
+    opacity: 1;
 }
 
 /* ==========================================
@@ -675,4 +677,28 @@ body.body-color-shift #pattern-divider {
     border-radius: clamp(24px, 4vw, 40px); /* Modern, soft rounded corners */
     border: 1px solid #e8e7e3;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================
+   11. HERO VIDEO CONTAINER & SPACING
+   ========================================== */
+.video-container {
+    width: 100%;
+    /* Scales height beautifully based on screen width */
+    aspect-ratio: 1 / 1; 
+    border-radius: clamp(16px, 3vw, 24px); /* Matches modern rounded corners of project cards */
+    overflow: hidden;
+    border: 1px solid #e8e7e3;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    
+    /* Elegant spacing to push the text down below it */
+    margin-bottom: clamp(40px, 8vh, 80px); 
+    opacity: 0; /* Hidden on load, GSAP will handle the entrance fade-in */
+}
+
+.hero-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the video fills the frame elegantly */
+    display: block;
 }
