@@ -437,7 +437,7 @@ body {
     width: 100vw;         
     margin-left: calc(-50vw + 50%); 
     left: 0;
-    height: calc(var(--square-size) * 15); 
+    height: calc(var(--square-size) * 10); 
     position: relative;
     overflow: hidden;
     background-color: #f4f3ef; 
@@ -665,7 +665,7 @@ body {
     justify-content: center;
     margin: clamp(30px, 6vh, 60px) auto;
     opacity: 0; /* Hidden on load, GSAP will fade it in */
-    transform: translateY(20px); /* Subtle upward drift as it fades in */
+    transform: translateY(40px); /* Subtle upward drift as it fades in */
 }
 
 .about-portrait {
@@ -680,12 +680,12 @@ body {
 }
 
 /* ==========================================
-   11. HERO VIDEO CONTAINER & SPACING
+   11. Main Project Photo
    ========================================== */
-.video-container {
+.video-container2 {
     width: 100%;
     /* Scales height beautifully based on screen width */
-    aspect-ratio: 1 / 1; 
+    aspect-ratio: 4 / 3; 
     border-radius: clamp(16px, 3vw, 24px); /* Matches modern rounded corners of project cards */
     overflow: hidden;
     border: 1px solid #e8e7e3;
@@ -701,4 +701,106 @@ body {
     height: 100%;
     object-fit: cover; /* Ensures the video fills the frame elegantly */
     display: block;
+}
+
+/* ==========================================
+   12. ADAPTIVE PORTRAIT/LANDSCAPE GALLERY FRAME
+   ========================================== */
+.gallery-card {
+    /* Padding creates the white "mat board" border around the photo */
+    padding: clamp(12px, 2vw, 20px); 
+    background-color: #ffffff;
+    
+    /* The outer border frame */
+    border: 1px solid #e8e7e3;
+    border-radius: clamp(16px, 3vw, 24px); /* Fluid rounded corners */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    
+    /* Crucial: Let the frame's height adapt dynamically to the image content */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-image {
+    width: 100%;
+    height: auto;          /* Forces the image to preserve its native aspect ratio */
+    display: block;
+    object-fit: fill;   /* Prevents any stretching or clipping */
+    
+    /* Inner image rounding (slightly smaller than the frame rounding for a nested look) */
+    border-radius: clamp(10px, 2vw, 16px); 
+}
+
+/* Elegant hover effect on the entire framed unit */
+.gallery-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================
+   13. PRODUCTION CREW LIST STYLING
+   ========================================== */
+.production-crew-section {
+    border-top: 1px solid #e8e7e3;
+    padding-top: clamp(20px, 4vh, 40px);
+    margin-bottom: clamp(40px, 6vh, 60px);
+}
+
+.crew-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.crew-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: clamp(1.1rem, 1.2vw + 0.6rem, 1.4rem) !important;
+    margin-bottom: 0;
+    width: 100%;
+    position: relative;
+}
+
+/* Subtle dot-leader spacing lines between Role and Name */
+.crew-list li::after {
+    content: "";
+    flex-grow: 1;
+    border-bottom: 1px dotted #d1d0cb;
+    margin: 0 15px;
+    order: 2;
+}
+
+.crew-role {
+    font-family: 'CustomHeadingFont', sans-serif;
+    font-weight: 700;
+    color: #1a1a1a;
+    order: 1;
+}
+
+.crew-name {
+    font-family: 'CustomBodyFont', sans-serif;
+    color: #575757;
+    order: 3;
+}
+
+/* Adjustments for tight mobile screens so roles and names don't clash */
+@media (max-width: 480px) {
+    .crew-list li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+    .crew-list li::after {
+        display: none; /* Hide the dots on tiny screens */
+    }
 }

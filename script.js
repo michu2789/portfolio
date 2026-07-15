@@ -1,120 +1,130 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // (Keep your existing header/initial fade-in code here!)
-    // Elegantly reveal the top nav layout on load
-    gsap.from(".top-navbar", {
-        duration: 1,
-        y: -40,
-        opacity: 0,
-        ease: "power3.out"
-    });
-
-    // Fade the introductory home section text in
-    gsap.from("#home h1, #home p", {
-        duration: 1.2,
-        y: 20,
-        opacity: 0,
-        stagger: 0.2,
-        delay: 0.3,
-        ease: "power2.out"
-    });
-
-    // Register ScrollTrigger
+    // Register ScrollTrigger once at the very top
     gsap.registerPlugin(ScrollTrigger);
 
-    // Smoothly rotate AND push the SVG to the bottom as the user scrolls
-    gsap.to(".flower", {
-        rotation: 360,      // Keeps the elegant spinning behavior
-        top: "80%",         // Smoothly moves the SVG down toward the bottom of the screen
-        ease: "none",       
-        scrollTrigger: {
-            trigger: "body",       // Tracks across the entire height of the website
-            start: "top top",      // Starts moving the second you begin scrolling
-            end: "bottom bottom",  // Reaches 85% exactly when you hit the absolute bottom
-            scrub: 1.5             // Maintains that smooth, fluid lag catch-up effect
-        }
-    });
+    // ==========================================
+    // 1. GLOBAL NAVBAR REVEAL (Runs on all pages)
+    // ==========================================
+    if (document.querySelector(".top-navbar")) {
+        gsap.from(".top-navbar", {
+            duration: 1,
+            y: -40,
+            opacity: 0,
+            ease: "power3.out"
+        });
+    }
 
-// Register ScrollTrigger
-    gsap.registerPlugin(ScrollTrigger);
+    // ==========================================
+    // 2. HOMEPAGE INTRO ANIMATION (Home only)
+    // ==========================================
+    const homeIntro = document.querySelector(".video-container, #home h1, #home p");
+    if (homeIntro) {
+        gsap.from(".video-container, #home h1, #home p", {
+            duration: 1.2,
+            y: 20,
+            opacity: 0,
+            stagger: 0.25,
+            delay: 0.3,
+            ease: "power2.out"
+        });
+    }
 
-    // DYNAMIC SVG VECTOR TRACING LOGIC
-    const zigzagPath = document.querySelector(".zigzag-path");
-    
-    // Ask the browser to measure the exact math length of your custom line design
-    const pathLength = zigzagPath.getTotalLength();
-    
-    // Initialize the line as completely hidden by setting the dash gaps to match its own length
-    gsap.set(zigzagPath, {
-        strokeDasharray: pathLength,
-        strokeDashoffset: pathLength
-    });
-
-    // Trace your custom line dynamically as the user scrolls down through projects
-    gsap.to(zigzagPath, {
-        strokeDashoffset: 0, // Reduces the offset to 0, drawing the line completely into view
-        ease: "none",        // Perfect 1:1 mechanical sync to the scroll wheel movement
-        scrollTrigger: {
-            trigger: "#projects",
-            start: "top bottom", // Animation begins the instant the project block hits the screen bottom
-            end: "bottom top",   // Animation completes the instant the projects block scrolls away out of view
-            scrub: 1             // Smooth, fluid lag-catchup weight tracking
-        }
-    });
-
-
-// Pin the pattern section dynamically with different scroll distances for mobile vs. desktop
-    let mm = gsap.matchMedia();
-
-    mm.add({
-        // Setup our screen conditions
-        isDesktop: "(min-width: 769px)",
-        isMobile: "(max-width: 768px)"
-    }, (context) => {
-        let { isDesktop } = context.conditions;
-
-        ScrollTrigger.create({
-            trigger: "#pattern-divider",
-            // Pin slightly lower down the screen on mobile to look natural
-            start: isDesktop ? "top 20%" : "top 40%",       
-            // CRITICAL: 400px of scrolling for desktop, but only 100px of scrolling on mobile!
-            end: isDesktop ? "+=400" : "+=100",          
-            pin: true,              
-            scrub: true,
-            onToggle: self => {
-                const divider = document.querySelector("#pattern-divider");
-                const body = document.body;
-                
-                if (self.isActive) {
-                    divider.classList.add("color-shift");
-                    body.classList.add("body-color-shift");
-                } 
-            },
-            onLeaveBack: () => {
-                document.querySelector("#pattern-divider").classList.remove("color-shift");
-                document.body.classList.remove("body-color-shift");
+    // ==========================================
+    // 3. SPINNING FLOWER BACKGROUND (Home only)
+    // ==========================================
+    if (document.querySelector(".flower")) {
+        gsap.to(".flower", {
+            rotation: 360,      
+            top: "80%",         
+            ease: "none",       
+            scrollTrigger: {
+                trigger: "body",       
+                start: "top top",      
+                end: "bottom bottom",  
+                scrub: 1.5             
             }
         });
-    });
+    }
 
-// LANGUAGE TOGGLE LOGIC
+    // ==========================================
+    // 4. VECTOR TRACING ZIGZAG LINE (Home only)
+    // ==========================================
+    const zigzagPath = document.querySelector(".zigzag-path");
+    if (zigzagPath) {
+        const pathLength = zigzagPath.getTotalLength();
+        
+        gsap.set(zigzagPath, {
+            strokeDasharray: pathLength,
+            strokeDashoffset: pathLength
+        });
+
+        gsap.to(zigzagPath, {
+            strokeDashoffset: 0, 
+            ease: "none",        
+            scrollTrigger: {
+                trigger: "#projects",
+                start: "top bottom", 
+                end: "bottom top",   
+                scrub: 1             
+            }
+        });
+    }
+
+    // ==========================================
+    // 5. PINNED CHECKERED PATTERN (Home only)
+    // ==========================================
+    if (document.querySelector("#pattern-divider")) {
+        let mm = gsap.matchMedia();
+
+        mm.add({
+            isDesktop: "(min-width: 769px)",
+            isMobile: "(max-width: 768px)"
+        }, (context) => {
+            let { isDesktop } = context.conditions;
+
+            ScrollTrigger.create({
+                trigger: "#pattern-divider",
+                start: isDesktop ? "top 20%" : "top 40%",       
+                end: isDesktop ? "+=400" : "+=100",          
+                pin: true,              
+                scrub: true,
+                onToggle: self => {
+                    const divider = document.querySelector("#pattern-divider");
+                    const body = document.body;
+                    
+                    if (self.isActive) {
+                        divider.classList.add("color-shift");
+                        body.classList.add("body-color-shift");
+                    } 
+                },
+                onLeaveBack: () => {
+                    document.querySelector("#pattern-divider").classList.remove("color-shift");
+                    document.body.classList.remove("body-color-shift");
+                }
+            });
+        });
+    }
+
+    // ==========================================
+    // 6. LANGUAGE TOGGLE LOGIC (All pages)
+    // ==========================================
     const langToggle = document.getElementById("lang-toggle");
     const bodyElement = document.body;
 
-    langToggle.addEventListener("change", () => {
-        if (langToggle.checked) {
-            // Switch to German
-            bodyElement.classList.replace("lang-en", "lang-de");
-            updateLanguage("de");
-        } else {
-            // Switch to English
-            bodyElement.classList.replace("lang-de", "lang-en");
-            updateLanguage("en");
-        }
-    });
+    if (langToggle) {
+        langToggle.addEventListener("change", () => {
+            if (langToggle.checked) {
+                bodyElement.classList.replace("lang-en", "lang-de");
+                updateLanguage("de");
+            } else {
+                bodyElement.classList.replace("lang-de", "lang-en");
+                updateLanguage("en");
+            }
+        });
+    }
 
     function updateLanguage(lang) {
-        // Find every element that has translation data
         const translatableElements = document.querySelectorAll("[data-lang-en]");
         
         translatableElements.forEach(elem => {
@@ -125,154 +135,147 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         
-        // Refresh ScrollTrigger calculations in case content heights shifted slightly
         ScrollTrigger.refresh();
     }
 
-// RESPONSIVE MOBILE POPUP MENU & STAR MORPH
+    // ==========================================
+    // 7. RESPONSIVE MOBILE MENU (All pages)
+    // ==========================================
     const toggleBtn = document.getElementById("menu-toggle-btn");
     const menuOverlay = document.getElementById("mobile-menu-overlay");
     const overlayLinks = document.querySelectorAll(".mobile-menu-links a");
     
-    let isMenuOpen = false;
+    if (toggleBtn && menuOverlay) {
+        let isMenuOpen = false;
+        const menuTimeline = gsap.timeline({ paused: true });
 
-    // Create a standalone master GSAP timeline for the star transformation layout
-    const menuTimeline = gsap.timeline({ paused: true });
+        menuTimeline.to(".line-1", { duration: 0.4, y: 13, rotation: 30, backgroundColor: "#1a1a1a", ease: "power2.out" }, 0)
+                    .to(".line-2", { duration: 0.4, rotation: 90, backgroundColor: "#1a1a1a", ease: "power2.out" }, 0)
+                    .to(".line-3", { duration: 0.4, y: -13, rotation: -30, backgroundColor: "#1a1a1a", ease: "power2.out" }, 0)
+                    .to(".menu-toggle", { duration: 0.5, rotation: 180, ease: "power2.inOut" }, 0); 
 
-    // 1. Morph the 3 straight lines into a geometric intersecting star pattern
-    menuTimeline.to(".line-1", { duration: 0.4, y: 13, rotation: 30, backgroundColor: "#1a1a1a", ease: "power2.out" }, 0)
-                .to(".line-2", { duration: 0.4, rotation: 90, backgroundColor: "#1a1a1a", ease: "power2.out" }, 0)
-                .to(".line-3", { duration: 0.4, y: -13, rotation: -30, backgroundColor: "#1a1a1a", ease: "power2.out" }, 0)
-                .to(".menu-toggle", { duration: 0.5, rotation: 180, ease: "power2.inOut" }, 0); // Spun the whole button box for extra flair
-
-    // 2. Animate the full-bleed link overlay fading in smoothly
-    menuTimeline.to(menuOverlay, {
-        duration: 0.4,
-        opacity: 1,
-        visibility: "visible",
-        pointerEvents: "auto",
-        ease: "power2.out"
-    }, 0);
-
-    // 3. Cascade the big menu text links upward into sight sequentially
-    menuTimeline.from(".mobile-menu-links li", {
-        duration: 0.4,
-        y: 30,
-        opacity: 0,
-        stagger: 0.1,
-        ease: "power2.out"
-    }, 0.1);
-
-    // Click Tripwire Controller
-    toggleBtn.addEventListener("click", () => {
-        if (!isMenuOpen) {
-            menuTimeline.play(); // Transforms into a star and opens popup
-        } else {
-            menuTimeline.reverse(); // Morphs back into 3 stripes and closes popup
-        }
-        isMenuOpen = !isMenuOpen;
-    });
-
-    // Auto-close menu window when clicking any menu anchor link option
-    overlayLinks.forEach(link => {
-        link.addEventListener("click", () => {
-            menuTimeline.reverse();
-            isMenuOpen = false;
-        });
-    });
-
-// Register ScrollTrigger
-    gsap.registerPlugin(ScrollTrigger);
-
-    // CRITICAL FIX: Wrap the animation inside a tiny timeout delay.
-    // This gives the pinned checkered pattern time to lock into place 
-    // before the browser calculates exactly where the About section sits.
-    setTimeout(() => {
-        
-        gsap.to(".socials-pill-container", {
+        menuTimeline.to(menuOverlay, {
+            duration: 0.4,
             opacity: 1,
-            scale: 1,           
-            duration: 0.6,
-            ease: "back.out(1.2)", 
+            visibility: "visible",
+            pointerEvents: "auto",
+            ease: "power2.out"
+        }, 0);
+
+        menuTimeline.from(".mobile-menu-links li", {
+            duration: 0.4,
+            y: 30,
+            opacity: 0,
+            stagger: 0.1,
+            ease: "power2.out"
+        }, 0.1);
+
+        toggleBtn.addEventListener("click", () => {
+            if (!isMenuOpen) {
+                menuTimeline.play(); 
+            } else {
+                menuTimeline.reverse(); 
+            }
+            isMenuOpen = !isMenuOpen;
+        });
+
+        overlayLinks.forEach(link => {
+            link.addEventListener("click", () => {
+                menuTimeline.reverse();
+                isMenuOpen = false;
+            });
+        });
+    }
+
+    // ==========================================
+    // 8. SOCIALS PILL ENTRANCE (Home only)
+    // ==========================================
+    if (document.querySelector(".socials-pill-container") && document.querySelector("#about")) {
+        setTimeout(() => {
+            gsap.to(".socials-pill-container", {
+                opacity: 1,
+                scale: 1,           
+                duration: 0.6,
+                ease: "back.out(1.2)", 
+                scrollTrigger: {
+                    trigger: "#about",         
+                    start: "top 60%",          
+                    end: "bottom bottom",
+                    toggleActions: "play none none reverse", 
+                }
+            });
+        }, 100);
+    }
+
+    // ==========================================
+    // 9. PHOTOSTACK DECK ENGINES (If present)
+    // ==========================================
+    const stacks = document.querySelectorAll(".interactive-deck");
+    if (stacks.length > 0) {
+        stacks.forEach(stack => {
+            let isAnimating = false;
+
+            stack.addEventListener("click", () => {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                const layers = Array.from(stack.querySelectorAll(".stack-layer"));
+                const currentTop = stack.querySelector(".active-top");
+                
+                currentTop.style.transition = "transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease";
+                currentTop.style.transform = "translate(80px, -40px) rotate(12deg)";
+                currentTop.style.opacity = "0";
+
+                setTimeout(() => {
+                    currentTop.classList.remove("active-top");
+                    currentTop.style.zIndex = "1"; 
+                    currentTop.style.transition = "none"; 
+
+                    layers.forEach(layer => {
+                        if (layer.classList.contains("layer-1")) {
+                            layer.classList.remove("layer-1");
+                            layer.classList.add("layer-3");
+                        } else if (layer.classList.contains("layer-2")) {
+                            layer.classList.remove("layer-2");
+                            layer.classList.add("layer-1");
+                            layer.classList.add("active-top"); 
+                        } else if (layer.classList.contains("layer-3")) {
+                            layer.classList.remove("layer-3");
+                            layer.classList.add("layer-2");
+                        }
+                    });
+
+                    void currentTop.offsetWidth;
+
+                    currentTop.style.transform = "";
+                    currentTop.style.opacity = "";
+                    
+                    setTimeout(() => {
+                        currentTop.style.zIndex = "";
+                        currentTop.style.transition = "";
+                        isAnimating = false; 
+                    }, 50);
+
+                }, 250); 
+            });
+        });
+    }
+
+    // ==========================================
+    // 10. PORTRAIT FADE-IN (If present)
+    // ==========================================
+    if (document.querySelector(".portrait-wrapper") && document.querySelector("#about p")) {
+        gsap.to(".portrait-wrapper", {
+            opacity: 1,
+            y: 0, 
+            ease: "power1.out",
             scrollTrigger: {
-                trigger: "#about",         // Watches the About section
-                start: "top 60%",          // Triggers when the top of the section enters the lower-middle viewport
-                end: "bottom bottom",
-                toggleActions: "play none none reverse", // Plays going down, reverses going up
-                // invalidateOnRefresh: true // Recalculates dynamically if the screen size changes
+                trigger: "#about p",        
+                start: "center center",     
+                end: "bottom center",       
+                scrub: 1.2                  
             }
         });
-
-    }, 100); // A brief 100ms pause ensures perfect structural execution
-
-// REFINED INTERACTIVE PHOTOSTACK DECK ENGINE (MULTI-DECK SUPPORT)
-    const stacks = document.querySelectorAll(".interactive-deck");
-    
-    stacks.forEach(stack => {
-        let isAnimating = false; // Safety lock per individual stack
-
-        stack.addEventListener("click", () => {
-            if (isAnimating) return;
-            isAnimating = true;
-
-            const layers = Array.from(stack.querySelectorAll(".stack-layer"));
-            const currentTop = stack.querySelector(".active-top");
-            
-            // 1. Swoop the top card out to the side smoothly
-            currentTop.style.transition = "transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease";
-            currentTop.style.transform = "translate(80px, -40px) rotate(12deg)";
-            currentTop.style.opacity = "0";
-
-            // 2. Wait for the swoop-out to finish, then restack behind the scenes
-            setTimeout(() => {
-                currentTop.classList.remove("active-top");
-                
-                // Drop its z-index immediately to the absolute bottom
-                currentTop.style.zIndex = "1"; 
-                currentTop.style.transition = "none"; // Temporarily kill transitions to reset instantly
-
-                layers.forEach(layer => {
-                    if (layer.classList.contains("layer-1")) {
-                        layer.classList.remove("layer-1");
-                        layer.classList.add("layer-3");
-                    } else if (layer.classList.contains("layer-2")) {
-                        layer.classList.remove("layer-2");
-                        layer.classList.add("layer-1");
-                        layer.classList.add("active-top"); // The next card climbs to the front
-                    } else if (layer.classList.contains("layer-3")) {
-                        layer.classList.remove("layer-3");
-                        layer.classList.add("layer-2");
-                    }
-                });
-
-                // 3. Force a quick browser redraw
-                void currentTop.offsetWidth;
-
-                // 4. Return the card to its resting background position smoothly
-                currentTop.style.transform = "";
-                currentTop.style.opacity = "";
-                
-                // Clean up inline styles completely
-                setTimeout(() => {
-                    currentTop.style.zIndex = "";
-                    currentTop.style.transition = "";
-                    isAnimating = false; // Unlock clicks
-                }, 50);
-
-            }, 250); // Matches the swoop duration perfectly
-        });
-    });
- // PORTRAIT SCROLLTRIGGER FADE-IN
-    gsap.to(".portrait-wrapper", {
-        opacity: 1,
-        y: 0, // Drifts up into its natural position
-        ease: "power1.out",
-        scrollTrigger: {
-            trigger: "#about p",        // Watches your bio paragraph
-            start: "center center",     // Starts fading when middle of text is in middle of viewport
-            end: "bottom center",       // Reaches 100% opacity when bottom of text hits the middle of viewport
-            scrub: 1.2                  // Silky smooth scroll binding
-        }
-    });
+    }
 
 });

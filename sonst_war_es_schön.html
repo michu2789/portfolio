@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>michel delaloye</title>
+    
+    <link rel="icon" type="image/svg+xml" href="favicon2.svg">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="lang-en"> 
+    <header class="top-navbar">
+        
+        <div class="logo">
+            <a href="index.html#home">michel delaloye</a>
+        </div>
+
+        <div class="nav-controls-wrapper">
+            
+            <div class="lang-switch-container">
+                <span class="lang-label">EN</span>
+                <label class="switch">
+                    <input type="checkbox" id="lang-toggle">
+                    <span class="slider round"></span>
+                </label>
+                <span class="lang-label">DE</span>
+            </div>
+
+            <div class="menu-container">
+                
+                <nav class="desktop-menu">
+                    <ul>
+                        <li><a href="index.html#home" data-lang-en="Home" data-lang-de="Startseite">Home</a></li>
+                        <li><a href="index.html#projects" data-lang-en="Projects" data-lang-de="Projekte">Projects</a></li>
+                        <li><a href="index.html#about" data-lang-en="About Me" data-lang-de="Über mich">About Me</a></li>
+                    </ul>
+                </nav>
+
+                <button class="menu-toggle" id="menu-toggle-btn" aria-label="Toggle Menu">
+                    <span class="stripe line-1"></span>
+                    <span class="stripe line-2"></span>
+                    <span class="stripe line-3"></span>
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="mobile-overlay" id="mobile-menu-overlay">
+            <nav class="mobile-menu-links">
+                <ul>
+                    <li><a href="index.html#home" data-lang-en="Home" data-lang-de="Startseite">Home</a></li>
+                    <li><a href="index.html#projects" data-lang-en="Projects" data-lang-de="Projekte">Projects</a></li>
+                    <li><a href="index.html#about" data-lang-en="About Me" data-lang-de="Über mich">About Me</a></li>
+                </ul>
+            </nav>
+        </div>
+
+    </header>
+
+    <div class="main-content">
+        <!-- PROJECT CONTENT SECTION -->
+        <section class="page-section">
+            
+            <!-- Back button to take users home -->
+            <div style="text-align: left; margin-bottom: 30px;">
+                <a href="index.html#projects" class="project-future-link" data-lang-en="← Back to Projects" data-lang-de="← Zurück zu Projekten">← Back to Projects</a>
+            </div>
+
+            <!-- Project Main Title -->
+            <h1 data-lang-en="Next Matters - 2026" data-lang-de="Next Matters - 2026">Next Matters - 2026</h1>
+            
+            <!-- Hero Media (Image or Video) -->
+            <div class="video-container2" style="opacity: 1;"> <!-- inline opacity keeps it visible if GSAP is only running on home -->
+                <!-- You can swap this <video> tag out for an <img> tag if you prefer -->
+                <img src="NM_1.jpg" alt="Main View" style="width:100%; border-radius: 8px;">
+            </div>
+
+            <!-- Project Details Grid (Quick Info Sidebar style) -->
+            <div class="project-details-meta" style="margin: 40px 0; border-top: 1px solid #e8e7e3; border-bottom: 1px solid #e8e7e3; padding: 20px 0;">
+                <p style="font-size: 1.3rem !important; text-align: left; margin: 5px 0;">
+                    <strong data-lang-en="Role:" data-lang-de="Rolle:">Role:</strong> Lighting Designer / Operator 
+                </p>
+                <p style="font-size: 1.3rem !important; text-align: left; margin: 5px 0;">
+                    <strong data-lang-en="Tools:" data-lang-de="Werkzeuge:">Tools:</strong> ETCnomad with Gadget II, OBS, OSC
+                </p>
+                <p style="font-size: 1.3rem !important; text-align: left; margin: 5px 0;">
+                    <strong data-lang-en="Date:" data-lang-de="Datum:">Date:</strong> 2026
+                </p>
+            </div>
+
+            <!-- Main Written Case Study -->
+            <div style="text-align: left; margin-top: 40px;">
+                <p data-lang-en="No grand events, no words of wisdom—just the honest logic of a child who knew exactly what mattered. Melia Inglin has rediscovered her old diaries, filled with such precise snapshots of happiness. Now they take center stage in an evening performance featuring singing, spoken passages, trombone, and piano. From the brief, often unintentionally funny entries emerge new compositions, spoken passages, and musical moments. The texts don’t tell grand stories, but are honest snapshots—precise, direct, and unfiltered. And perhaps, reading between the lines, one discovers that even on days that were somehow lousy, something beautiful remains."
+                   data-lang-de="Keine grossen Ereignisse, keine Lebensweisheiten – nur die ehrliche Logik eines Kindes, das genau wusste, was zählt. Melia Inglin hat ihre alten Tagebücher wiedergefunden, voll mit solchen präzisen Bestandsaufnahmen des Glücks. Jetzt stehen sie im Mittelpunkt eines Bühnenabends mit Gesang, Texteinlagen, Posaune und Klavier. Aus den knappen, oft unfreiwillig komischen Einträgen entstehen neue Kompositionen, gesprochene Passagen und musikalische Momente. Die Texte erzählen keine grossen Geschichten, sondern sind ehrliche Momentaufnahmen,  präzise, direkt und ohne Filter. Und vielleicht entdeckt man zwischen den Zeilen, dass selbst an Tagen, die irgendwie blöd waren, noch etwas Schönes bleibt.">
+                   No grand events, no words of wisdom—just the honest logic of a child who knew exactly what mattered. Melia Inglin has rediscovered her old diaries, filled with such precise snapshots of happiness. Now they take center stage in an evening performance featuring singing, spoken passages, trombone, and piano. From the brief, often unintentionally funny entries emerge new compositions, spoken passages, and musical moments. The texts don’t tell grand stories, but are honest snapshots—precise, direct, and unfiltered. And perhaps, reading between the lines, one discovers that even on days that were somehow lousy, something beautiful remains.
+                </p>
+                
+                <!-- PRODUCTION CREW SECTION -->
+            <div class="production-crew-section" style="margin-top: 50px; text-align: left;">
+                <h2 data-lang-en="Production Team" data-lang-de="Produktionsteam">Production Team</h2>
+                
+                <ul class="crew-list">
+                    <li>
+                        <span class="crew-role" data-lang-en="Director" data-lang-de="Regie">Director</span>
+                        <span class="crew-name">Name Surname</span>
+                    </li>
+                    <li>
+                        <span class="crew-role" data-lang-en="Lighting Design" data-lang-de="Lichtdesign">Lighting Design</span>
+                        <span class="crew-name">Michel Delaloye</span>
+                    </li>
+                    <li>
+                        <span class="crew-role" data-lang-en="Stage Manager" data-lang-de="Inspirizient">Stage Manager</span>
+                        <span class="crew-name">Name Surname</span>
+                    </li>
+                    <li>
+                        <span class="crew-role" data-lang-en="Sound Design" data-lang-de="Sounddesign">Sound Design</span>
+                        <span class="crew-name">Name Surname</span>
+                    </li>
+                </ul>
+            </div>
+            </div>
+
+            <!-- Secondary Gallery / Additional Images -->
+            <div class="project-list" style="margin-top: 60px;">
+                <article class="gallery-card">
+                    <img src="SWES_2.jpg" alt="Detail" class="gallery-image">
+                </article>
+                <article class="gallery-card">
+                    <img src="SWES_3.jpg" alt="Detail" class="gallery-image">
+                </article>
+            </div>
+
+        </section>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
