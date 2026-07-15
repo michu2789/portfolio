@@ -63,32 +63,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-// Register ScrollTrigger
-    gsap.registerPlugin(ScrollTrigger);
+// Pin the pattern section dynamically with different scroll distances for mobile vs. desktop
+    let mm = gsap.matchMedia();
 
-    // Pin the pattern section and dynamically shift colors based on scroll direction
-    ScrollTrigger.create({
-        trigger: "#pattern-divider",
-        start: "top 20%",       // Pins when the top of the pattern hits the top of the viewport
-        end: "+=400",          // Keeps it locked in place for 400px of scrolling
-        pin: true,              
-        scrub: true,
-        onToggle: self => {
-            const divider = document.querySelector("#pattern-divider");
-            const body = document.body;
-            
-            // If we are actively sitting in the pinned zone, turn on the color shift
-            if (self.isActive) {
-                divider.classList.add("color-shift");
-                body.classList.add("body-color-shift");
-            } 
-        },
-        onLeaveBack: () => {
-            // CRITICAL: When scrolling UP and completely leaving the top of the pattern,
-            // this strips the classes away to revert everything back to original sage green!
-            document.querySelector("#pattern-divider").classList.remove("color-shift");
-            document.body.classList.remove("body-color-shift");
-        }
+    mm.add({
+        // Setup our screen conditions
+        isDesktop: "(min-width: 769px)",
+        isMobile: "(max-width: 768px)"
+    }, (context) => {
+        let { isDesktop } = context.conditions;
+
+        ScrollTrigger.create({
+            trigger: "#pattern-divider",
+            // Pin slightly lower down the screen on mobile to look natural
+            start: isDesktop ? "top 20%" : "top 40%",       
+            // CRITICAL: 400px of scrolling for desktop, but only 100px of scrolling on mobile!
+            end: isDesktop ? "+=400" : "+=100",          
+            pin: true,              
+            scrub: true,
+            onToggle: self => {
+                const divider = document.querySelector("#pattern-divider");
+                const body = document.body;
+                
+                if (self.isActive) {
+                    divider.classList.add("color-shift");
+                    body.classList.add("body-color-shift");
+                } 
+            },
+            onLeaveBack: () => {
+                document.querySelector("#pattern-divider").classList.remove("color-shift");
+                document.body.classList.remove("body-color-shift");
+            }
+        });
     });
 
 // LANGUAGE TOGGLE LOGIC
@@ -199,11 +205,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }, 100); // A brief 100ms pause ensures perfect structural execution
 
-// REFINED INTERACTIVE PHOTOSTACK DECK ENGINE
-    const stack = document.querySelector(".interactive-deck");
+// REFINED INTERACTIVE PHOTOSTACK DECK ENGINE (MULTI-DECK SUPPORT)
+    const stacks = document.querySelectorAll(".interactive-deck");
     
-    if (stack) {
-        let isAnimating = false; // Safety lock to prevent glitches if clicked mid-animation
+    stacks.forEach(stack => {
+        let isAnimating = false; // Safety lock per individual stack
 
         stack.addEventListener("click", () => {
             if (isAnimating) return;
@@ -221,9 +227,9 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 currentTop.classList.remove("active-top");
                 
-                // Drop its z-index immediately to the absolute bottom so it cannot flash on top
+                // Drop its z-index immediately to the absolute bottom
                 currentTop.style.zIndex = "1"; 
-                currentTop.style.transition = "none"; // Temporarily kill transitions to reset position instantly
+                currentTop.style.transition = "none"; // Temporarily kill transitions to reset instantly
 
                 layers.forEach(layer => {
                     if (layer.classList.contains("layer-1")) {
@@ -239,14 +245,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 });
 
-                // 3. Forcing a quick browser redraw step so the layout changes register silently
+                // 3. Force a quick browser redraw
                 void currentTop.offsetWidth;
 
                 // 4. Return the card to its resting background position smoothly
                 currentTop.style.transform = "";
                 currentTop.style.opacity = "";
                 
-                // Clean up inline styles completely after everything settles down
+                // Clean up inline styles completely
                 setTimeout(() => {
                     currentTop.style.zIndex = "";
                     currentTop.style.transition = "";
@@ -255,6 +261,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }, 250); // Matches the swoop duration perfectly
         });
-    }
+    });
+ // PORTRAIT SCROLLTRIGGER FADE-IN
+    gsap.to(".portrait-wrapper", {
+        opacity: 1,
+        y: 0, // Drifts up into its natural position
+        ease: "power1.out",
+        scrollTrigger: {
+            trigger: "#about p",        // Watches your bio paragraph
+            start: "center center",     // Starts fading when middle of text is in middle of viewport
+            end: "bottom center",       // Reaches 100% opacity when bottom of text hits the middle of viewport
+            scrub: 1.2                  // Silky smooth scroll binding
+        }
+    });
 
 });
