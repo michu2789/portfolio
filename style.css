@@ -28,9 +28,10 @@
 }
 
 /* ==========================================
-   2. TYPOGRAPHY APPLICATION HIERARCHY
+   2. TYPOGRAPHY & GLOBAL ARCHITECTURE APPLICATION
    ========================================== */
 body {
+    margin: 0; /* ← CRITICAL: This strips away the default browser margins on the left/right! */
     font-family: 'CustomBodyFont', sans-serif;
     line-height: 1.5;
     background-color: #f4f3ef; 
@@ -694,12 +695,12 @@ body {
        Creates a soft gradient mask. The video will be 100% visible in the center,
        but will fade out to 0% opacity near the edges to blend perfectly.
     */
-    mask-image: radial-gradient(circle at 50% -80%, rgb(255, 255, 255) 60%, rgba(96, 59, 22, 0) 100%);
-    -webkit-mask-image: radial-gradient(circle at 50% -80%, rgb(255, 255, 255) 60%, rgba(96, 59, 22,0) 100%);
+    mask-image: radial-gradient(circle at 30% -150%, rgb(255, 255, 255) 60%, rgba(96, 59, 22, 0) 100%);
+    -webkit-mask-image: radial-gradient(circle at 30% -150%, rgb(255, 255, 255) 60%, rgba(96, 59, 22,0) 100%);
 }
 
 .hero-video-section .video-container {
-    width: 100vw;
+    width: 100%;
     /* Spans beautifully, leaving nav height (approx 80px-100px) in consideration */
     height: calc(100vh - 90px); 
     border-radius: 0; /* Keeps it edge-to-edge */

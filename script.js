@@ -15,22 +15,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-// ==========================================
-    // 2. TIMED VIDEO CONTROLLER & FIRST-SCROLL REVEAL (Home only)
+    // ==========================================
+    // 2. TIMED VIDEO CONTROLLER & UNIFIED REVEAL (Mobile Optimized)
     // ==========================================
     const heroVideo = document.getElementById("hero-bulb-video");
     const body = document.body;
 
     if (heroVideo && body.classList.contains("initial-dark")) {
-        
-        // Disable looping so the video stops naturally after its single full play
         heroVideo.loop = false;
 
-        // A. WORKFLOW FOR PRE-LOADING VIDEO AND STOPPING AT 7.5s
-        const initializeBulbVideo = () => {
-            heroVideo.currentTime = 2.5; // Starts at 2.5 seconds
+        // A. CLIP INITIALIZATION (Forces playhead to 2.5s and pauses smoothly at 7.5s)
+        const handleInitialClip = () => {
+            if (heroVideo.currentTime < 2.5) {
+                heroVideo.currentTime = 2.5;
+            }
 
-            // Set up a continuous check to pause the video right at 7.5 seconds
             const checkPausePoint = () => {
                 if (heroVideo.currentTime >= 6.8) {
                     heroVideo.pause();
@@ -38,52 +37,57 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             };
             heroVideo.addEventListener("timeupdate", checkPausePoint);
-
-            // Play the opening sequence (2.5s -> 7.5s)
-            heroVideo.play().catch(err => {
-                console.log("Autoplay blocked by browser. Video will start on first scroll.", err);
-            });
+            heroVideo.removeEventListener("play", handleInitialClip);
         };
 
-        // Ensure video metadata is fully loaded before adjusting the playhead
-        if (heroVideo.readyState >= 1) {
-            initializeBulbVideo();
-        } else {
-            heroVideo.addEventListener("loadedmetadata", initializeBulbVideo);
+        // Attach listeners to catch the video the exact millisecond it starts running
+        heroVideo.addEventListener("play", handleInitialClip);
+        if (!heroVideo.paused) {
+            handleInitialClip(); // Fallback execution if video autoplays instantly
         }
 
-        // B. SCROLLTRIGGER UNLEASHES THE SCROLL SEQUENCE
-        ScrollTrigger.create({
-            trigger: "body",
-            start: "top top",
-            end: "+=10", // Instantly triggers on the very first scroll gesture
-            once: true,  // Automatically self-destructs after running once
-            onEnter: () => {
-                
-                // Continue playing from 7.5s onwards
-                heroVideo.play().catch(err => console.log(err));
+        // B. UNIFIED MASTER REVEAL ENGINE
+        let hasRevealed = false;
 
-                // Fade back the body background color to its signature off-white
-                body.classList.remove("initial-dark");
+        const executePageReveal = () => {
+            if (hasRevealed) return;
+            hasRevealed = true;
 
-                // Seamlessly slide your headers, paragraph, and custom SVG decors into sight
-                const revealTimeline = gsap.timeline();
-                revealTimeline
-                    .to(".top-navbar", {
-                        opacity: 1,
-                        y: 0,
-                        duration: 1,
-                        ease: "power3.out"
-                    })
-                    .to("#home h1, #home p, .flower, .background-zigzag-svg", {
-                        opacity: 1,
-                        y: 0,
-                        duration: 1.2,
-                        stagger: 0.15,
-                        ease: "power2.out"
-                    }, "-=0.5");
-            }
-        });
+            // Instantly wipe out listeners so this block absolutely never fires a second time
+            window.removeEventListener("scroll", executePageReveal);
+            window.removeEventListener("touchstart", executePageReveal);
+            window.removeEventListener("click", executePageReveal);
+
+            // Resumes video playback (Capturing touchstart/click satisfies mobile security protocols!)
+            heroVideo.play().catch(err => {
+                console.log("Media playback recovery notice:", err);
+            });
+
+            // Transition the canvas to your warm off-white layout background color
+            body.classList.remove("initial-dark");
+
+            // Bring navbar and content elements into position sequentially
+            const revealTimeline = gsap.timeline();
+            revealTimeline
+                .to(".top-navbar", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: "power3.out"
+                })
+                .to("#home h1, #home p, .flower, .background-zigzag-svg", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    stagger: 0.15,
+                    ease: "power2.out"
+                }, "-=0.5");
+        };
+
+        // Bind layout execution to desktop scrolling, mobile swiping, and tap gestures
+        window.addEventListener("scroll", executePageReveal, { passive: true });
+        window.addEventListener("touchstart", executePageReveal, { passive: true });
+        window.addEventListener("click", executePageReveal);
     }
 
     // ==========================================
