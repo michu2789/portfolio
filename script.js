@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     // 1. GLOBAL NAVBAR REVEAL (Runs on all pages)
     // ==========================================
-    if (document.querySelector(".top-navbar")) {
+    // FIXED: Added an initial-dark check so this doesn't leak the menu onto the black loading screen
+    if (document.querySelector(".top-navbar") && !document.body.classList.contains("initial-dark")) {
         gsap.from(".top-navbar", {
             duration: 1,
             y: -40,
@@ -16,87 +17,100 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // 2. TIMED VIDEO CONTROLLER & UNIFIED REVEAL (Mobile Optimized)
+    // 2. MASTER LIGHT SWITCH REVEAL ENGINE (Memory Persisted)
     // ==========================================
-    const heroVideo = document.getElementById("hero-bulb-video");
-    const body = document.body;
+    const powerToggle = document.getElementById("power-light-toggle");
+    const bodyElement = document.body;
 
-    if (heroVideo && body.classList.contains("initial-dark")) {
-        heroVideo.loop = false;
+    // --- STEP A: CHECK BROWSER MEMORY ON PAGE LOAD ---
+    const savedLightsState = localStorage.getItem("portfolio-lights");
 
-        // A. CLIP INITIALIZATION (Forces playhead to 2.5s and pauses smoothly at 7.5s)
-        const handleInitialClip = () => {
-            if (heroVideo.currentTime < 2.5) {
-                heroVideo.currentTime = 2.5;
-            }
-
-            const checkPausePoint = () => {
-                if (heroVideo.currentTime >= 6.8) {
-                    heroVideo.pause();
-                    heroVideo.removeEventListener("timeupdate", checkPausePoint);
-                }
-            };
-            heroVideo.addEventListener("timeupdate", checkPausePoint);
-            heroVideo.removeEventListener("play", handleInitialClip);
-        };
-
-        // Attach listeners to catch the video the exact millisecond it starts running
-        heroVideo.addEventListener("play", handleInitialClip);
-        if (!heroVideo.paused) {
-            handleInitialClip(); // Fallback execution if video autoplays instantly
+    // If they already turned the lights on in a previous session/page click
+    if (savedLightsState === "on") {
+        bodyElement.classList.remove("initial-dark");
+        bodyElement.style.overflow = ""; // Keep scrolling unlocked
+        
+        if (powerToggle) {
+            powerToggle.checked = true; // Keep the giant switch toggled to ON
         }
 
-        // B. UNIFIED MASTER REVEAL ENGINE
-        let hasRevealed = false;
-
-        const executePageReveal = () => {
-            if (hasRevealed) return;
-            hasRevealed = true;
-
-            // Instantly wipe out listeners so this block absolutely never fires a second time
-            window.removeEventListener("scroll", executePageReveal);
-            window.removeEventListener("touchstart", executePageReveal);
-            window.removeEventListener("click", executePageReveal);
-
-            // Resumes video playback (Capturing touchstart/click satisfies mobile security protocols!)
-            heroVideo.play().catch(err => {
-                console.log("Media playback recovery notice:", err);
-            });
-
-            // Transition the canvas to your warm off-white layout background color
-            body.classList.remove("initial-dark");
-
-            // Bring navbar and content elements into position sequentially
-            const revealTimeline = gsap.timeline();
-            revealTimeline
-                .to(".top-navbar", {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    ease: "power3.out"
-                })
-                .to("#home h1, #home p, .flower, .background-zigzag-svg", {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1.2,
-                    stagger: 0.15,
-                    ease: "power2.out"
-                }, "-=0.5");
-        };
-
-        // Bind layout execution to desktop scrolling, mobile swiping, and tap gestures
-        window.addEventListener("scroll", executePageReveal, { passive: true });
-        window.addEventListener("touchstart", executePageReveal, { passive: true });
-        window.addEventListener("click", executePageReveal);
+        // Instantly illuminate all assets so they don't flash black when returning home
+        gsap.set(".top-navbar, #home h1, #home p, #projects, #pattern-divider, #about", { 
+            opacity: 1, 
+            y: 0,
+            pointerEvents: "auto" 
+        });
+        gsap.set(".flower", { opacity: 0.6, pointerEvents: "auto" });
+        gsap.set(".background-zigzag-svg", { opacity: 0.8, pointerEvents: "auto" });
     }
 
+    // --- STEP B: TWO-WAY INTERACTION LISTENER ---
+    if (powerToggle) {
+        powerToggle.addEventListener("change", () => {
+            if (powerToggle.checked) {
+                
+                // 1. Save state to memory so sub-pages know the lights are ON
+                localStorage.setItem("portfolio-lights", "on");
+                
+                bodyElement.classList.remove("initial-dark");
+                bodyElement.style.overflow = ""; 
+
+                const revealTimeline = gsap.timeline();
+                gsap.set(".top-navbar, #home h1, #home p, #projects, #pattern-divider, #about, .flower, .background-zigzag-svg", { pointerEvents: "auto" });
+
+                revealTimeline
+                    .fromTo(".top-navbar", 
+                        { opacity: 0, y: -20 },
+                        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }
+                    )
+                    .fromTo("#home h1, #home p", 
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", stagger: 0.15 }, 
+                        "-=0.3"
+                    )
+                    .fromTo("#projects",
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+                        "-=0.6"
+                    )
+                    .fromTo("#pattern-divider", { opacity: 0 }, { opacity: 1, duration: 0.6 }, "-=0.4")
+                    .fromTo("#about",
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+                        "-=0.4"
+                    )
+                    .fromTo(".flower", { opacity: 0 }, { opacity: 0.6, duration: 0.8 }, "-=0.8")
+                    .fromTo(".background-zigzag-svg", { opacity: 0 }, { opacity: 0.8, duration: 0.8 }, "-=0.8");
+
+            } else {
+                
+                // 2. Clear state or set to off when they manually blackout the site
+                localStorage.setItem("portfolio-lights", "off");
+                
+                bodyElement.classList.add("initial-dark");
+                bodyElement.style.overflow = "hidden"; 
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                const hideTimeline = gsap.timeline();
+                hideTimeline.to(".top-navbar, #home h1, #home p, #projects, #pattern-divider, #about, .flower, .background-zigzag-svg", {
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        gsap.set(".top-navbar, #home h1, #home p, #projects, #pattern-divider, #about, .flower, .background-zigzag-svg", { pointerEvents: "none" });
+                    }
+                });
+            }
+        });
+    }
+    
     // ==========================================
     // 3. SPINNING FLOWER BACKGROUND (Home only)
     // ==========================================
     if (document.querySelector(".flower")) {
         gsap.to(".flower", {
-            rotation: 360,      
-            top: "80%",         
+            rotation: 500,      
+            top: "50%",         
             ease: "none",       
             scrollTrigger: {
                 trigger: "body",       
@@ -121,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         gsap.to(zigzagPath, {
             strokeDashoffset: 0, 
+            top: "20%",
             ease: "none",        
             scrollTrigger: {
                 trigger: "#projects",
@@ -151,11 +166,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 scrub: true,
                 onToggle: self => {
                     const divider = document.querySelector("#pattern-divider");
-                    const body = document.body;
                     
                     if (self.isActive) {
                         divider.classList.add("color-shift");
-                        body.classList.add("body-color-shift");
+                        document.body.classList.add("body-color-shift");
                     } 
                 },
                 onLeaveBack: () => {
@@ -170,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // 6. LANGUAGE TOGGLE LOGIC (All pages)
     // ==========================================
     const langToggle = document.getElementById("lang-toggle");
-    const bodyElement = document.body;
 
     if (langToggle) {
         langToggle.addEventListener("change", () => {

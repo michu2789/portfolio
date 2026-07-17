@@ -12,6 +12,7 @@
 <body class="lang-en initial-dark"> 
 
     <header class="top-navbar">
+        <!-- Your navbar code -->
         
         <div class="logo">
             <a href="#home">michel delaloye</a>
@@ -60,19 +61,19 @@
 
     </header>
 
-        <div class="hero-video-section">
-                <div class="video-container">
-                    <!-- ADD autoplay BACK HERE -->
-                    <video id="hero-bulb-video" autoplay muted playsinline class="hero-video">
-                        <source src="bulb 1.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            </div>
-
     <div class="main-content">
 
         <section id="home" class="page-section">
+
+        <!-- --- RE-ENGINEERED GIANT MASTER LIGHT SWITCH --- -->
+            <div class="master-light-switch-wrapper">
+                <span class="switch-side-label off-text">OFF</span>
+                <label class="switch master-light-switch">
+                    <input type="checkbox" id="power-light-toggle">
+                    <span class="slider round"></span>
+                </label>
+                <span class="switch-side-label on-text">ON</span>
+            </div>
 
             <h1 data-lang-en="Hi, I'm Michel Delaloye" data-lang-de="Hallo, ich bin Michel Delaloye">Hi, I'm Michel Delaloye</h1>
             <p data-lang-en="Welcome to my digital space. Explore my latest work below—where light, video, and digital media intersect—and get an exclusive look behind the scenes." 
@@ -121,7 +122,7 @@
                     data-lang-de="Ein musikalisch untermaltes Bühnenstück dreier Geschwistern. Mit einer wilden Reise durch ihre Kindheit.">
                     A stage play with musical accompaniment about three siblings. It takes the audience on a wild journey through their childhood.
                     </p>
-                    <a href="sonst_war_es_schön.html" class="project-future-link" data-lang-en="View Project →" data-lang-de="Projekt Ansehen →">View Project →</a>
+                    <a class="project-future-link" data-lang-en="View Project →" data-lang-de="Projekt Ansehen →" href="sonst_war_es_schön.html">View Project →</a>
                 </div>
 
             </div>
@@ -165,6 +166,8 @@
             </div>
         </section>
 
+    </div>
+
     <section id="pattern-divider">
         <div class="checkered-pattern orange-pattern"></div>
         <div class="checkered-pattern green-pattern"></div>
@@ -189,21 +192,22 @@
                 <img src="profile.webp" alt="Michel Delaloye" class="about-portrait">
             </div>
                     
-            <h2 data-lang-en="Contact Me" data-lang-de="Kontaktieren Sie mich">Contact Me</h2>
-                <div class="socials-pill-container">
-                    <a href="https://instagram.com/michel_delaloye" target="_blank" rel="noopener" class="social-pill-link">Instagram</a>
-                    <a href="https://troet.cafe/@michu" target="_blank" rel="noopener" class="social-pill-link">Mastodon</a>
-                    <a href="mailto:michel@delaloye.ch" class="social-pill-link" data-lang-en="Email" data-lang-de="E-Mail">Email</a>
-                </div>
-            </div>
-        </section>
-        
-    </div>
+                    <h2 data-lang-en="Contact Me" data-lang-de="Kontaktieren Sie mich">Contact Me</h2>
+                    <div class="socials-pill-container">
+                        <a href="https://instagram.com/michel_delaloye" target="_blank" rel="noopener" class="social-pill-link">Instagram</a>
+                        <a href="https://troet.cafe/@michu" target="_blank" rel="noopener" class="social-pill-link">Mastodon</a>
+                        <a href="mailto:michel@delaloye.ch" class="social-pill-link" data-lang-en="Email" data-lang-de="E-Mail">Email</a>
+                    </div>
+                </section> <!-- Closes #about first -->
+                
+            </div> <!-- Closes the second .main-content container last -->
 
-    <svg class="flower" width="30%" height="30%" viewBox="0 0 1487 1694" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
-    <g transform="matrix(1,0,0,1,-241.885656,-663.433943)">
-        <path d="M1107,1541C1107,1541 351.371,536.067 1082,741C1812.629,945.933 1265.833,1375 974,1665C819.353,1818.676 100.259,2296.649 849,2307C1597.741,2317.351 1344.059,1737.92 1182,1601C1011.167,1456.667 528.137,1024.303 430,1105C331.863,1185.697 194.04,1406.832 395,1446C595.96,1485.168 1545.739,1711.98 1661,1267C1776.261,822.02 1238.097,819.134 1199,1065C1159.903,1310.866 1060.809,1995.69 783,1949C505.191,1902.31 404.167,1426.333 566,1387C727.833,1347.667 2013.17,1811.529 1596,2101C1178.83,2390.471 1187.174,1873.292 1149,1722C1110.826,1570.708 1107,1541 1107,1541" style="fill:none;stroke:rgb(253,195,105);stroke-width:100px;"/>
-    </g>
+    <svg class="flower" viewBox="0 0 2500 2700" width="50%" height="50%" version="1.1" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+        <g transform="matrix(1.390899,0,0,1.390899,-477.457078,-693.221368)">
+            <path d="M1278,1681C1383.746,1599.087 1404.723,1536.777 1433,1647C1461.277,1757.223 1482.194,1851.611 1284,1918C1085.806,1984.389 813.859,1571.974 998,1424C1182.141,1276.026 1468.442,1179.636 1653,1346C1837.558,1512.364 1825.266,1822.894 1835,2026C1839.515,2120.217 1631.768,2145.82 1286,2138C683.855,2124.382 622.922,1852.39 670,1707C717.078,1561.61 799.414,1224.806 961,1124C1154.345,1003.381 1920.439,887.171 2015,1321C2114.488,1777.433 2078.242,2081.074 1927,2246C1775.758,2410.926 1389.488,2411.416 961,2391C568.211,2372.285 339.919,2054.131 422,1671" style="fill:none;stroke:rgb(253,195,105);stroke-width:87.5px;"/>
+            <ellipse cx="1159" cy="1550" rx="57" ry="59" style="stroke:rgb(253,195,105);stroke-width:66.67px; fill:rgb(0,0,0);"/>
+            <ellipse cx="1572.291" cy="1526" rx="61.291" ry="63" style="stroke:rgb(253,195,105);stroke-width:75px; fill:rgb(0,0,0);"/>
+        </g>
     </svg>
     
     <svg class="flower" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="150" height="150">

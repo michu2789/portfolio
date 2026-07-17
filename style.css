@@ -643,7 +643,7 @@ body {
     transition: color 0.3s ease;
 }
 .project-row:hover .project-future-link {
-    color: #708238;
+    color: #87d68dff;
 }
 
 /* RESPONSIVE FLIP FOR MOBILE SCREEN CONFIGURATIONS */
@@ -681,54 +681,150 @@ body {
 }
 
 /* ==========================================
-   11. FULL-BLEED HERO VIDEO SECTION
+   11. CINEMATIC GIANT MASTER SWITCH DEFINITIONS
    ========================================== */
-.hero-video-section {
-    width: 100%;
-    background-color: #000000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    
+body.initial-dark {
+    background-color: #000000 !important;
+    overflow: hidden; 
+}
+
+/* Base structural setup for your home section */
+#home {
+    position: relative;
+}
+
+body.initial-dark #home {
+    min-height: calc(100vh - 90px); /* Matches viewport space exactly under the navbar */
+}
+
+body:not(.initial-dark) #home {
+    min-height: 70vh; 
+}
+
+/* --- THE SMOOTH GLIDING SWITCH ENGINE --- */
+.master-light-switch-wrapper {
+    position: absolute;
+    left: 50%;
     /* 
-       Creates a soft gradient mask. The video will be 100% visible in the center,
-       but will fade out to 0% opacity near the edges to blend perfectly.
+       CRITICAL: Keep transform strictly locked to the X-axis across all states.
+       Removing the Y-axis shift completely eliminates the violent layout jump!
     */
-    mask-image: radial-gradient(circle at 30% -150%, rgb(255, 255, 255) 60%, rgba(96, 59, 22, 0) 100%);
-    -webkit-mask-image: radial-gradient(circle at 30% -150%, rgb(255, 255, 255) 60%, rgba(96, 59, 22,0) 100%);
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    
+    /* Ultra-smooth cubic-bezier tracking for the glide motion */
+    transition: top 0.8s cubic-bezier(0.25, 1, 0.5, 1), z-index 0.5s step-end;
 }
 
-.hero-video-section .video-container {
-    width: 100%;
-    /* Spans beautifully, leaving nav height (approx 80px-100px) in consideration */
-    height: calc(100vh - 90px); 
-    border-radius: 0; /* Keeps it edge-to-edge */
-    border: none;
-    box-shadow: none;
-    margin-bottom: 0;
-    opacity: 1; /* Keeps visible during dark phase */
-    transition: border-radius 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+/* STATE 1: Centered cleanly on the dark screen when lights are OFF */
+body.initial-dark .master-light-switch-wrapper {
+    top: calc(50vh - 130px); 
+    z-index: 9999; /* Floats above everything while dark */
 }
 
-.hero-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Keeps video cropped beautifully on all screens */
-    display: block;
+/* STATE 2: Integrates into the top header of your home section when lights are ON */
+body:not(.initial-dark) .master-light-switch-wrapper {
+    top: 120px; 
+    /* 
+       CRITICAL: Drops below 1000 so it smoothly slides UNDER your 
+       sticky navbar when you scroll down to look at projects!
+    */
+    z-index: 10; 
 }
 
-/* On mobile, shrink the viewport height slightly so text is hinted at the bottom */
-@media (max-width: 768px) {
-    .hero-video-section .video-container {
-        height: 65vh;
-    }
+/* --- TEXT FLOW INTERACTION --- */
+#home h1 {
+    margin-top: 0;
+    /* Keeps the movement completely fluid and tied to the switch speed */
+    transition: margin-top 0.8s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+
+/* 
+   INCREASED: Pushes your name further down to give the giant 
+   switch comfortable, theatrical breathing room when turned ON.
+*/
+body:not(.initial-dark) #home h1 {
+    margin-top: 240px; 
+}
+
+/* --- THEATRICAL INTERACTION LABELS --- */
+.switch-side-label {
+    font-family: 'CustomHeadingFont', sans-serif;
+    font-size: clamp(1.2rem, 2vw + 0.5rem, 1.8rem);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: color 0.5s ease, opacity 0.5s ease;
+}
+
+/* Dim the inactive option dynamically depending on the active state */
+body.initial-dark .off-text { color: #ffffff; opacity: 1; font-weight: 700; }
+body.initial-dark .on-text { color: #ffffff; opacity: 0.2; }
+body:not(.initial-dark) .off-text { color: #1a1a1a; opacity: 0.2; }
+body:not(.initial-dark) .on-text { color: #1a1a1a; opacity: 1; font-weight: 700; }
+
+/* Giant Switch Metrics */
+/* --- GIANT SWITCH METRICS, PERFECT PILL ROUNDNESS & THICK OUTLINE --- */
+.master-light-switch { 
+    width: 140px; 
+    height: 74px; 
+}
+
+/* Forces the switch components to calculate space safely with thick outlines */
+.master-light-switch * {
+    box-sizing: border-box;
+}
+
+.master-light-switch .slider {
+    border: 4px solid #ffffff;   /* 1. Thickens outline to 4px (Glows white in the dark) */
+    border-radius: 74px;         /* 2. Matches the perfect semi-circle curvature of the knob */
+    transition: border-color 0.5s ease, background-color 0.3s ease;
+}
+
+/* Adapts the thick outline to dark charcoal when the lights are turned ON */
+body:not(.initial-dark) .master-light-switch .slider {
+    border-color: #e87ea1ff;
+}
+
+/* Recalibrated knob spacing to center perfectly inside the thick 4px border execution */
+.master-light-switch .slider:before { 
+    height: 60px; 
+    width: 60px; 
+    left: 3px; 
+    bottom: 3px; 
+    border-radius: 50%;
+}
+
+/* Keeps the sliding tracking calculation perfectly aligned with the new border width */
+.master-light-switch input:checked + .slider:before { 
+    transform: translateX(66px); 
+}
+
+/* --- CHOREOGRAPHED BLINDING STATES --- */
+/* Base structural states: hide ALL layout content sections exclusively during the blackout phase */
+body.initial-dark .top-navbar,
+body.initial-dark #home h1,
+body.initial-dark #home p,
+body.initial-dark #projects,
+body.initial-dark #pattern-divider,
+body.initial-dark #about,
+body.initial-dark .flower,
+body.initial-dark .background-zigzag-svg {
+    opacity: 0 !important;
+    pointer-events: none !important; /* Blocks touch input and accidental scrolling highlights */
+}
+
+body {
+    transition: background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* ==========================================
    11.1 Main Project Photo
    ========================================== */
-.video-container2 {
+.project_photo {
     width: 100%;
     /* Scales height beautifully based on screen width */
     aspect-ratio: 4 / 3; 
@@ -740,13 +836,6 @@ body {
     /* Elegant spacing to push the text down below it */
     margin-bottom: clamp(40px, 8vh, 80px); 
     opacity: 0; /* Hidden on load, GSAP will handle the entrance fade-in */
-}
-
-.hero-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the video fills the frame elegantly */
-    display: block;
 }
 
 /* ==========================================
@@ -896,49 +985,4 @@ body {
     border-color: #87d68dff;
     transform: translateY(-2px);
     box-shadow: 0 8px 15px rgba(135, 214, 141, 0.2);
-}
-
-/* ==========================================
-   16. CINEMATIC FIRST-SCROLL REVEAL STATES
-   ========================================== */
-/* The initial pitch-black canvas on load */
-body.initial-dark {
-    background-color: #000000 !important;
-}
-
-/* Hide header, texts, and background decorative shapes during the dark state */
-body.initial-dark .top-navbar,
-body.initial-dark #home h1,
-body.initial-dark #home p,
-body.initial-dark .flower,
-body.initial-dark .background-zigzag-svg {
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* Hide the video container's light border and shadow so it is invisible against the black screen */
-body.initial-dark .video-container {
-    border-color: transparent;
-    box-shadow: none;
-    opacity: 1; 
-}
-
-/* --- UPDATE 1: SPEED UP BACKGROUND REVEAL TO 0.5 SECONDS --- */
-body {
-    transition: background-color 2.5s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* --- UPDATE 2: BLEND THE VIDEO BACKGROUND --- */
-.hero-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    
-    /* 
-       This is the magic! "screen" makes pure black completely transparent.
-       As the body background turns off-white, the black box around the video 
-       disappears, leaving only the glowing bulb.
-    */
-    mix-blend-mode: screen; 
 }
