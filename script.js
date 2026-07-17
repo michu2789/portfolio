@@ -15,18 +15,74 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+// ==========================================
+    // 2. TIMED VIDEO CONTROLLER & FIRST-SCROLL REVEAL (Home only)
     // ==========================================
-    // 2. HOMEPAGE INTRO ANIMATION (Home only)
-    // ==========================================
-    const homeIntro = document.querySelector(".video-container, #home h1, #home p");
-    if (homeIntro) {
-        gsap.from(".video-container, #home h1, #home p", {
-            duration: 1.2,
-            y: 20,
-            opacity: 0,
-            stagger: 0.25,
-            delay: 0.3,
-            ease: "power2.out"
+    const heroVideo = document.getElementById("hero-bulb-video");
+    const body = document.body;
+
+    if (heroVideo && body.classList.contains("initial-dark")) {
+        
+        // Disable looping so the video stops naturally after its single full play
+        heroVideo.loop = false;
+
+        // A. WORKFLOW FOR PRE-LOADING VIDEO AND STOPPING AT 7.5s
+        const initializeBulbVideo = () => {
+            heroVideo.currentTime = 2.5; // Starts at 2.5 seconds
+
+            // Set up a continuous check to pause the video right at 7.5 seconds
+            const checkPausePoint = () => {
+                if (heroVideo.currentTime >= 6.8) {
+                    heroVideo.pause();
+                    heroVideo.removeEventListener("timeupdate", checkPausePoint);
+                }
+            };
+            heroVideo.addEventListener("timeupdate", checkPausePoint);
+
+            // Play the opening sequence (2.5s -> 7.5s)
+            heroVideo.play().catch(err => {
+                console.log("Autoplay blocked by browser. Video will start on first scroll.", err);
+            });
+        };
+
+        // Ensure video metadata is fully loaded before adjusting the playhead
+        if (heroVideo.readyState >= 1) {
+            initializeBulbVideo();
+        } else {
+            heroVideo.addEventListener("loadedmetadata", initializeBulbVideo);
+        }
+
+        // B. SCROLLTRIGGER UNLEASHES THE SCROLL SEQUENCE
+        ScrollTrigger.create({
+            trigger: "body",
+            start: "top top",
+            end: "+=10", // Instantly triggers on the very first scroll gesture
+            once: true,  // Automatically self-destructs after running once
+            onEnter: () => {
+                
+                // Continue playing from 7.5s onwards
+                heroVideo.play().catch(err => console.log(err));
+
+                // Fade back the body background color to its signature off-white
+                body.classList.remove("initial-dark");
+
+                // Seamlessly slide your headers, paragraph, and custom SVG decors into sight
+                const revealTimeline = gsap.timeline();
+                revealTimeline
+                    .to(".top-navbar", {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        ease: "power3.out"
+                    })
+                    .to("#home h1, #home p, .flower, .background-zigzag-svg", {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1.2,
+                        stagger: 0.15,
+                        ease: "power2.out"
+                    }, "-=0.5");
+            }
         });
     }
 
